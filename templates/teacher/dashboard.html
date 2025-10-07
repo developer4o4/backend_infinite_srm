@@ -1,0 +1,490 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>O'qituvchi Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, #fd79a8 0%, #e84393 100%);
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        nav a:hover, nav a.active {
+            background-color: rgba(255,255,255,0.2);
+        }
+
+        main {
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .welcome-section {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .welcome-section h2 {
+            color: #e84393;
+            margin-bottom: 0.5rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .stat-info h3 {
+            font-size: 1.8rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .stat-info p {
+            color: #666;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .today-classes, .teacher-actions {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-header h3 {
+            color: #444;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            background: #e84393;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn:hover {
+            background: #d63031;
+        }
+
+        .classes-list {
+            list-style: none;
+        }
+
+        .class-item {
+            padding: 1rem 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .class-item:last-child {
+            border-bottom: none;
+        }
+
+        .class-time {
+            font-weight: bold;
+            color: #e84393;
+            min-width: 80px;
+        }
+
+        .class-status {
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .status-active {
+            background: #e8f5e9;
+            color: #388e3c;
+        }
+
+        .status-upcoming {
+            background: #fff3e0;
+            color: #f57c00;
+        }
+
+        .action-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #333;
+            transition: all 0.3s;
+        }
+
+        .action-btn:hover {
+            border-color: #e84393;
+            background: #fff5f5;
+        }
+
+        .action-icon {
+            font-size: 1.5rem;
+            width: 40px;
+            height: 40px;
+            background: #e84393;
+            color: white;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .students-progress {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .progress-item {
+            margin-bottom: 1rem;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: #e84393;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            color: #666;
+            border-top: 1px solid #eee;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            nav ul {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div>
+                <h1>O'qituvchi Dashboard</h1>
+                <nav>
+                    <ul>
+                        <li><a href="{% url 'teacher_dashboard' %}" class="active">Bosh sahifa</a></li>
+                        <li><a href="">Dars jadvali</a></li>
+                        <li><a href="">O'quvchilar</a></li>
+                        <li><a href="">Topshiriqlar</a></li>
+                        <li><a href="">Materiallar</a></li>
+                        <li><a href="{% url 'logout' %}">Chiqish</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="user-info">
+                <div class="user-avatar">
+                    {{ request.session.first_name|first }}{{ request.session.last_name|first }}
+                </div>
+                <div>
+                    <strong>{{ request.session.first_name }} {{ request.session.last_name }}</strong>
+                    <div style="font-size: 0.9rem; opacity: 0.8;">O'qituvchi</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="welcome-section">
+            <h2>Xush kelibsiz, {{ request.session.first_name }}!</h2>
+            <p>Bugungi darslar va vazifalaringiz</p>
+        </section>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon" style="background: #e3f2fd; color: #1976d2;">
+                    📚
+                </div>
+                <div class="stat-info">
+                    <h3>5</h3>
+                    <p>Jami kurslar</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon" style="background: #e8f5e9; color: #388e3c;">
+                    👥
+                </div>
+                <div class="stat-info">
+                    <h3>42</h3>
+                    <p>O'quvchilar</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon" style="background: #fff3e0; color: #f57c00;">
+                    📅
+                </div>
+                <div class="stat-info">
+                    <h3>3</h3>
+                    <p>Bugungi darslar</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon" style="background: #f3e5f5; color: #7b1fa2;">
+                    ✅
+                </div>
+                <div class="stat-info">
+                    <h3>12</h3>
+                    <p>Yakunlangan topshiriqlar</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="dashboard-grid">
+            <div class="today-classes">
+                <div class="section-header">
+                    <h3>Bugungi darslar</h3>
+                    <a href="" class="btn">Barchasi</a>
+                </div>
+                <ul class="classes-list">
+                    <li class="class-item">
+                        <div class="class-time">09:00</div>
+                        <div>
+                            <strong>Dasturlash asoslari</strong>
+                            <div style="font-size: 0.8rem; color: #666;">Python-1 guruhi</div>
+                        </div>
+                        <span class="class-status status-active">Aktiv</span>
+                    </li>
+                    <li class="class-item">
+                        <div class="class-time">11:00</div>
+                        <div>
+                            <strong>Django framework</strong>
+                            <div style="font-size: 0.8rem; color: #666;">Web-2 guruhi</div>
+                        </div>
+                        <span class="class-status status-upcoming">Kutilmoqda</span>
+                    </li>
+                    <li class="class-item">
+                        <div class="class-time">14:00</div>
+                        <div>
+                            <strong>Ma'lumotlar tuzilmasi</strong>
+                            <div style="font-size: 0.8rem; color: #666;">Python-2 guruhi</div>
+                        </div>
+                        <span class="class-status status-upcoming">Kutilmoqda</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="teacher-actions">
+                <div class="section-header">
+                    <h3>Tezkor amallar</h3>
+                </div>
+                <div class="action-grid">
+                    <a href="" class="action-btn">
+                        <div class="action-icon">👥</div>
+                        <div>
+                            <strong>O'quvchilar ro'yxati</strong>
+                            <div style="font-size: 0.8rem; color: #666;">Barcha o'quvchilar</div>
+                        </div>
+                    </a>
+                    <a href="" class="action-btn">
+                        <div class="action-icon">📝</div>
+                        <div>
+                            <strong>Topshiriq berish</strong>
+                            <div style="font-size: 0.8rem; color: #666;">Yangi topshiriq</div>
+                        </div>
+                    </a>
+                    <a href="" class="action-btn">
+                        <div class="action-icon">📚</div>
+                        <div>
+                            <strong>Materiallar</strong>
+                            <div style="font-size: 0.8rem; color: #666;">O'quv materiallari</div>
+                        </div>
+                    </a>
+                    <a href="" class="action-btn">
+                        <div class="action-icon">⭐</div>
+                        <div>
+                            <strong>Baholash</strong>
+                            <div style="font-size: 0.8rem; color: #666;">O'quvchilarni baholash</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="students-progress">
+            <div class="section-header">
+                <h3>O'quvchilar progressi</h3>
+            </div>
+            <div class="progress-item">
+                <div class="progress-label">
+                    <span>Dasturlash asoslari</span>
+                    <span>78%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress" style="width: 78%;"></div>
+                </div>
+            </div>
+            <div class="progress-item">
+                <div class="progress-label">
+                    <span>Django framework</span>
+                    <span>65%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress" style="width: 65%;"></div>
+                </div>
+            </div>
+            <div class="progress-item">
+                <div class="progress-label">
+                    <span>Ma'lumotlar tuzilmasi</span>
+                    <span>45%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress" style="width: 45%;"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>O'qituvchi Dashboard &copy; 2024. Barcha huquqlar himoyalangan.</p>
+    </footer>
+</body>
+</html>

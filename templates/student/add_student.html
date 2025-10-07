@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Talaba qo‘shish</title>
+</head>
+
+<body>
+    <h1>Yangi talaba qo‘shish</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label>Username:</label><br>
+        <input type="text" name="username"><br><br>
+
+        <label>Password:</label><br>
+        <input type="password" name="password"><br><br>
+
+        <label>Telefon raqam:</label><br>
+        <input type="text" name="phone_number"><br><br>
+
+        <label>Ism:</label><br>
+        <input type="text" name="first_name"><br><br>
+
+        <label>Familiya:</label><br>
+        <input type="text" name="last_name"><br><br>
+
+        <label>Status:</label><br>
+        <select name="status">
+            {% for key, value in status_choices %}
+            <option value="{{ key }}">{{ value }}</option>
+            {% endfor %}
+        </select><br><br>
+
+
+        <label>Administrator:</label><br>
+        <input type="text" name="admistrator"><br><br>
+
+        <button type="submit">Qo‘shish</button>
+    </form>
+    <br>
+    <a href="{% url 'students' %}">Ortga</a>
+</body>
+
+</html>

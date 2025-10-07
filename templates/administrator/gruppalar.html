@@ -1,0 +1,391 @@
+<!-- templates/admin/gruppalar.html -->
+{% extends 'administrator/base.html' %}
+{% load static %}
+
+{% block title %}Guruhlar Boshqaruvi{% endblock %}
+
+{% block extra_css %}
+<style>
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+    }
+
+    .page-title {
+        color: #00b894;
+        font-size: 1.8rem;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .stat-card {
+        background: white;
+        border-radius: 10px;
+        padding: 1.5rem;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        text-align: center;
+    }
+
+    .stat-number {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #00b894;
+        margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+        color: #666;
+        font-size: 0.9rem;
+    }
+
+    .search-box {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        margin-bottom: 1.5rem;
+    }
+
+    .search-form {
+        display: flex;
+        gap: 1rem;
+        align-items: end;
+    }
+
+    .search-input {
+        flex: 1;
+        position: relative;
+    }
+
+    .search-input .form-control {
+        padding-left: 2.5rem;
+        width: 100%;
+    }
+
+    .search-icon {
+        position: absolute;
+        left: 0.8rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #666;
+    }
+
+    .filters {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+        align-items: end;
+    }
+
+    .filter-group {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .filter-group label {
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+        color: #555;
+    }
+
+    .form-control {
+        padding: 0.7rem;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 1rem;
+        min-width: 200px;
+        transition: border-color 0.3s;
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: #00b894;
+        box-shadow: 0 0 0 2px rgba(0, 184, 148, 0.1);
+    }
+
+    .btn {
+        padding: 0.7rem 1.5rem;
+        background: #00b894;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .btn:hover {
+        background: #00a085;
+        transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+        background: #6c757d;
+    }
+
+    .btn-secondary:hover {
+        background: #545b62;
+    }
+
+    .btn-sm {
+        padding: 0.3rem 0.8rem;
+        font-size: 0.8rem;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.3s;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+    }
+
+    .btn-view {
+        background: #17a2b8;
+        color: white;
+    }
+
+    .btn-view:hover {
+        background: #138496;
+    }
+
+    .groups-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .group-card {
+        background: white;
+        border-radius: 10px;
+        padding: 1.5rem;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        transition: all 0.3s;
+        border-left: 4px solid #00b894;
+    }
+
+    .group-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    }
+
+    .group-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 1rem;
+    }
+
+    .group-name {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #00b894;
+        margin-bottom: 0.5rem;
+    }
+
+    .group-status {
+        background: #d4edda;
+        color: #155724;
+        padding: 0.3rem 0.8rem;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 500;
+    }
+
+    .status-inactive {
+        background: #f8d7da;
+        color: #721c24;
+    }
+
+    .group-info {
+        margin-bottom: 1rem;
+    }
+
+    .info-item {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0.5rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .info-label {
+        color: #666;
+        font-weight: 500;
+    }
+
+    .info-value {
+        font-weight: 600;
+        text-align: right;
+    }
+
+    .group-actions {
+        display: flex;
+        gap: 0.5rem;
+        margin-top: 1rem;
+    }
+
+    .no-results {
+        text-align: center;
+        padding: 3rem;
+        color: #666;
+        grid-column: 1 / -1;
+    }
+
+    .no-results i {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        opacity: 0.5;
+    }
+
+    @media (max-width: 768px) {
+        .page-header {
+            flex-direction: column;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .search-form {
+            flex-direction: column;
+        }
+
+        .filters {
+            flex-direction: column;
+        }
+
+        .groups-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .group-actions {
+            flex-direction: column;
+        }
+
+        .form-control {
+            min-width: 100%;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h2 class="page-title">📚 Guruhlar Boshqaruvi</h2>
+</div>
+
+<!-- Statistika -->
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-number">{{ total_groups }}</div>
+        <div class="stat-label">Jami Guruhlar</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number">{{ active_groups }}</div>
+        <div class="stat-label">Faol Guruhlar</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number">{{ total_students_in_groups }}</div>
+        <div class="stat-label">Jami O'quvchilar</div>
+    </div>
+</div>
+
+<!-- Qidiruv -->
+<div class="search-box">
+    <form method="GET" class="search-form">
+        <div class="search-input">
+            <span class="search-icon">🔍</span>
+            <input type="text" name="search" value="{{ search_query }}" class="form-control" 
+                   placeholder="Guruh nomi boʻyicha qidirish...">
+        </div>
+        <div class="filter-group">
+            <button type="submit" class="btn">Qidirish</button>
+        </div>
+    </form>
+</div>
+
+<!-- Filtrlar -->
+<div class="filters">
+    <div class="filter-group">
+        <label for="teacherFilter">O'qituvchi boʻyicha</label>
+        <select id="teacherFilter" name="teacher" class="form-control" onchange="this.form.submit()">
+            <option value="">Barcha o'qituvchilar</option>
+            {% for teacher in teachers %}
+                <option value="{{ teacher.id }}" {% if teacher_filter == teacher.id|stringformat:"i" %}selected{% endif %}>
+                    {{ teacher.first_name }} {{ teacher.last_name }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="filter-group">
+        <label for="statusFilter">Holati boʻyicha</label>
+        <select id="statusFilter" name="status" class="form-control" onchange="this.form.submit()">
+            <option value="">Barchasi</option>
+            <option value="active" {% if status_filter == 'active' %}selected{% endif %}>Faol</option>
+            <option value="inactive" {% if status_filter == 'inactive' %}selected{% endif %}>Tugagan</option>
+        </select>
+    </div>
+    <div class="filter-group">
+        <a href="{% url 'admin_gruppalar' %}" class="btn-secondary btn">Filtrlarni tozalash</a>
+    </div>
+</div>
+
+<!-- Guruhlar kartalari -->
+<div class="groups-grid">
+    {% if groups %}
+        {% for group in groups %}
+        <div class="group-card">
+            <div class="group-header">
+                <div>
+                    <div class="group-name">{{ group.title }}</div>
+                </div>
+                <span class="group-status {% if group.status == 'inactive' %}status-inactive{% endif %}">
+                    {{ group.get_status_display }}
+                </span>
+            </div>
+            
+            <div class="group-info">
+                <div class="info-item">
+                    <span class="info-label">O'qituvchi:</span>
+                    <span class="info-value">{{ group.teacher.first_name }} {{ group.teacher.last_name }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Narxi:</span>
+                    <span class="info-value">{{ group.group_price }} so'm</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Dars vaqti:</span>
+                    <span class="info-value">{{ group.group_time }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">O'quvchilar:</span>
+                    <span class="info-value">{{ group.students.count }} ta</span>
+                </div>
+            </div>
+            
+            <div class="group-actions">
+                <a href="{% url 'admin_group_detail' group.id %}" class="btn-sm btn-view" style="flex: 1; justify-content: center;">
+                    👁️ Guruhni Ko'rish
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+    <div class="no-results">
+        <div>📚</div>
+        <h3>Guruhlar topilmadi</h3>
+        <p>{% if search_query or teacher_filter or status_filter %}Qidiruv shartlariga mos guruhlar topilmadi.{% else %}Hozircha hech qanday guruh mavjud emas.{% endif %}</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

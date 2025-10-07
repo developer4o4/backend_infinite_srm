@@ -1,0 +1,52 @@
+<!-- templates/groups/delete_confirm.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guruhni O'chirish - Super Admin</title>
+    <!-- Include the same CSS styles -->
+</head>
+<body>
+    <header>
+        <!-- Same header -->
+    </header>
+
+    <main>
+        <div class="page-header">
+            <h2 class="page-title">Guruhni O'chirish</h2>
+            <a href="{% url 'group_detail' group.id %}" class="btn-secondary btn">
+                ← Ortga qaytish
+            </a>
+        </div>
+
+        <div class="form-container" style="text-align: center;">
+            <div style="font-size: 4rem; margin-bottom: 1rem;">⚠️</div>
+            <h3 style="color: #dc3545; margin-bottom: 1rem;">Guruhni O'chirish</h3>
+            <p style="margin-bottom: 2rem; font-size: 1.1rem;">
+                Siz rostdan ham <strong>"{{ group.title }}"</strong> guruhini o'chirmoqchimisiz?
+            </p>
+            
+            {% if group.students.exists %}
+            <div class="alert alert-warning">
+                <strong>Diqqat!</strong> Bu guruhda {{ group.students.count }} ta o'quvchi mavjud. 
+                Guruhni o'chirish bilan barcha o'quvchilar guruhdan chiqariladi.
+            </div>
+            {% endif %}
+            
+            <form method="POST" style="display: inline-block;">
+                {% csrf_token %}
+                <div style="display: flex; gap: 1rem; justify-content: center;">
+                    <a href="{% url 'group_detail' group.id %}" class="btn-secondary btn">
+                        Bekor qilish
+                    </a>
+                    <button type="submit" class="btn-danger btn">
+                        🗑️ Guruhni O'chirish
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+</body>
+</html>

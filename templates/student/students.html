@@ -1,0 +1,59 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Talabalar</title>
+  <link rel="stylesheet" href="{% static 'css/students.css' %}">
+</head>
+<body>
+  <header>
+    <h1>Talabalar ro'yxati</h1>
+    <a href="/">⬅ Orqaga</a>
+  </header>
+
+  <main>
+    <a href="{% url 'add_student' %}" class="btn-primary">Yangi talaba qo'shish</a>
+    <input type="text" id="searchStudent" placeholder="Qidirish...">
+
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Ism</th>
+          <th>Familiya</th>
+          <th>Telefon</th>
+          <th>Holati</th>
+          <th>Amallar</th>
+        </tr>
+      </thead>
+      <tbody id="studentTable">
+        {% for student in students %}
+          <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ student.first_name }}</td>
+            <td>{{ student.last_name }}</td>
+            <td>{{ student.phone_number }}</td>
+            <td>
+              <span class="status status-{{ student.status|lower }}">{{ student.status }}</span>
+            </td>
+            <td>
+              <div class="actions">
+                <a href="{% url 'edit_student' student.uuid %}" class="btn-edit">Tahrirlash</a>
+                <a href="{% url 'delete_student' student.uuid %}" class="btn-delete">O'chirish</a>
+              </div>
+            </td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="6" class="no-data">Hech qanday talaba topilmadi</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </main>
+
+  <script src="{% static 'js/student.js' %}"></script>
+</body>
+</html>

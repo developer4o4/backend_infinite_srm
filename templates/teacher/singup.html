@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ro‘yxatdan o‘tish</title>
+</head>
+<body>
+    <h2>Ro‘yxatdan o‘tish</h2>
+    <form method="post">
+        {% csrf_token %}
+        <input type="text" name="username" placeholder="Username" required><br>
+        <input type="password" name="password" placeholder="Parol" required><br>
+        <input type="text" name="first_name" placeholder="Ism" required><br>
+        <input type="text" name="last_name" placeholder="Familiya" required><br>
+        <input type="text" name="direction" placeholder="Yo‘nalish" required><br>
+        <input type="text" name="phone_number" placeholder="Telefon raqam" required><br>
+        <button type="submit">Yuborish</button>
+    </form>
+    {% for message in messages %}
+        <p style="color:red;">{{ message }}</p>
+    {% endfor %}
+    <a href="{% url 'login' %}">Login sahifasiga o‘tish</a>
+</body>
+</html>

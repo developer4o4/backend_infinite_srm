@@ -1,0 +1,271 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRM Tizimiga Kirish</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .login-container {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 450px;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .login-header h1 {
+            color: #667eea;
+            margin-bottom: 0.5rem;
+            font-size: 1.8rem;
+        }
+
+        .login-header p {
+            color: #666;
+        }
+
+        .user-type-selector {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .user-type-btn {
+            padding: 1.2rem 0.5rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .user-type-btn:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+        }
+
+        .user-type-btn.active {
+            border-color: #667eea;
+            background: #f0f4ff;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+        }
+
+        .user-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .user-type-name {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.2rem;
+        }
+
+        .user-type-desc {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #555;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 1rem;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-login:hover {
+            background: #5a6fd8;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .error-message {
+            background: #ffe6e6;
+            color: #d63031;
+            padding: 0.8rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            text-align: center;
+            border-left: 4px solid #d63031;
+        }
+
+        .success-message {
+            background: #e6ffe6;
+            color: #00b894;
+            padding: 0.8rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            text-align: center;
+            border-left: 4px solid #00b894;
+        }
+
+        @media (max-width: 480px) {
+            .user-type-selector {
+                grid-template-columns: 1fr;
+            }
+            
+            .login-container {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <h1>CRM Tizimi</h1>
+            <p>Hisobingizga kiring</p>
+        </div>
+
+        {% if messages %}
+            {% for message in messages %}
+                {% if message.tags == 'error' %}
+                    <div class="error-message">
+                        {{ message }}
+                    </div>
+                {% elif message.tags == 'success' %}
+                    <div class="success-message">
+                        {{ message }}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+
+        <form method="post" id="loginForm">
+            {% csrf_token %}
+            <input type="hidden" name="user_type" id="userType" value="super_admin">
+            
+            <div class="user-type-selector">
+                <div class="user-type-btn active" data-type="super_admin">
+                    <div class="user-icon">⚡</div>
+                    <div class="user-type-name">Super Admin</div>
+                    <div class="user-type-desc">Tizim boshqaruvchi</div>
+                </div>
+                <div class="user-type-btn" data-type="admin">
+                    <div class="user-icon">👨‍💼</div>
+                    <div class="user-type-name">Administrator</div>
+                    <div class="user-type-desc">Ma'muriy ishlar</div>
+                </div>
+                <div class="user-type-btn" data-type="teacher">
+                    <div class="user-icon">👨‍🏫</div>
+                    <div class="user-type-name">O'qituvchi</div>
+                    <div class="user-type-desc">Darslar boshqaruvi</div>
+                </div>
+                <div class="user-type-btn" data-type="student">
+                    <div class="user-icon">🎓</div>
+                    <div class="user-type-name">Talaba</div>
+                    <div class="user-type-desc">O'quv jarayoni</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="username">Foydalanuvchi nomi</label>
+                <input type="text" id="username" name="username" required placeholder="Foydalanuvchi nomingizni kiriting">
+            </div>
+
+            <div class="form-group">
+                <label for="password">Parol</label>
+                <input type="password" id="password" name="password" required placeholder="Parolingizni kiriting">
+            </div>
+
+            <button type="submit" class="btn-login">Tizimga kirish</button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const userTypeBtns = document.querySelectorAll('.user-type-btn');
+            const userTypeInput = document.getElementById('userType');
+            
+            userTypeBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    userTypeBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    userTypeInput.value = this.getAttribute('data-type');
+                });
+            });
+
+            document.getElementById('loginForm').addEventListener('submit', function(e) {
+                const username = document.getElementById('username').value.trim();
+                const password = document.getElementById('password').value.trim();
+                
+                if (!username) {
+                    e.preventDefault();
+                    alert('Iltimos, foydalanuvchi nomini kiriting');
+                    document.getElementById('username').focus();
+                    return;
+                }
+                
+                if (!password) {
+                    e.preventDefault();
+                    alert('Iltimos, parolni kiriting');
+                    document.getElementById('password').focus();
+                    return;
+                }
+            });
+
+            document.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    document.getElementById('loginForm').requestSubmit();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

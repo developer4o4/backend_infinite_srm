@@ -1,0 +1,860 @@
+<!-- templates/admin/student_detail.html -->
+{% extends 'administrator/base.html' %}
+{% load static %}
+
+{% block title %}{{ student.first_name }} {{ student.last_name }} - O'quvchi Tafsilotlari{% endblock %}
+
+{% block extra_css %}
+<style>
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+    }
+
+    .page-title {
+        color: #00b894;
+        font-size: 1.8rem;
+    }
+
+    .btn {
+        padding: 0.7rem 1.5rem;
+        background: #00b894;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .btn:hover {
+        background: #00a085;
+        transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+        background: #6c757d;
+    }
+
+    .btn-secondary:hover {
+        background: #545b62;
+    }
+
+    .btn-warning {
+        background: #ffc107;
+        color: #212529;
+    }
+
+    .btn-warning:hover {
+        background: #e0a800;
+    }
+
+    /* Messages Styling */
+    .messages-container {
+        margin-bottom: 2rem;
+    }
+
+    .alert {
+        padding: 1rem 1.5rem;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        border-left: 4px solid;
+        animation: slideIn 0.3s ease-out;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .alert-success {
+        background: #d4edda;
+        color: #155724;
+        border-left-color: #28a745;
+    }
+
+    .alert-error {
+        background: #f8d7da;
+        color: #721c24;
+        border-left-color: #dc3545;
+    }
+
+    .alert-warning {
+        background: #fff3cd;
+        color: #856404;
+        border-left-color: #ffc107;
+    }
+
+    .alert-close {
+        background: none;
+        border: none;
+        font-size: 1.2rem;
+        cursor: pointer;
+        margin-left: 1rem;
+        opacity: 0.7;
+        transition: opacity 0.3s;
+    }
+
+    .alert-close:hover {
+        opacity: 1;
+    }
+
+    @keyframes slideIn {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+
+    /* Profile Container */
+    .profile-container {
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        gap: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .profile-card {
+        background: white;
+        border-radius: 10px;
+        padding: 2rem;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        text-align: center;
+    }
+
+    .profile-avatar {
+        width: 120px;
+        height: 120px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.5rem;
+        color: white;
+        margin: 0 auto 1rem;
+        font-weight: bold;
+    }
+
+    .profile-name {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: #333;
+    }
+
+    .profile-role {
+        color: #00b894;
+        font-weight: 500;
+        margin-bottom: 1rem;
+    }
+
+    .status-badge {
+        display: inline-block;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        margin-bottom: 1.5rem;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    .status-badge:hover {
+        transform: scale(1.05);
+    }
+
+    .status-approved {
+        background: #d4edda;
+        color: #155724;
+    }
+
+    .status-not-confirmed {
+        background: #fff3cd;
+        color: #856404;
+    }
+
+    .status-group {
+        background: #d1ecf1;
+        color: #0c5460;
+    }
+
+    .quick-stats {
+        margin-top: 2rem;
+    }
+
+    .stat-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.7rem 0;
+        border-bottom: 1px solid #f5f5f5;
+    }
+
+    .stat-item:last-child {
+        border-bottom: none;
+    }
+
+    .stat-label {
+        color: #666;
+    }
+
+    .stat-value {
+        font-weight: 600;
+        color: #00b894;
+    }
+
+    .info-card {
+        background: white;
+        border-radius: 10px;
+        padding: 2rem;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    }
+
+    .info-section {
+        margin-bottom: 2rem;
+    }
+
+    .info-section:last-child {
+        margin-bottom: 0;
+    }
+
+    .info-section h3 {
+        color: #00b894;
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid #f0f0f0;
+    }
+
+    .info-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+    }
+
+    .info-item {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .info-label {
+        font-weight: 500;
+        color: #666;
+        margin-bottom: 0.3rem;
+        font-size: 0.9rem;
+    }
+
+    .info-value {
+        font-weight: 600;
+        color: #333;
+    }
+
+    .groups-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+
+    .group-card {
+        background: #f8f9fa;
+        border: 1px solid #e9ecef;
+        border-radius: 8px;
+        padding: 1rem;
+        transition: all 0.3s;
+        border-left: 4px solid #00b894;
+    }
+
+    .group-card:hover {
+        border-color: #00b894;
+        transform: translateY(-2px);
+    }
+
+    .group-name {
+        font-weight: 600;
+        color: #00b894;
+        margin-bottom: 0.5rem;
+    }
+
+    .group-info {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.9rem;
+        color: #666;
+    }
+
+    .empty-groups {
+        text-align: center;
+        padding: 2rem;
+        color: #666;
+    }
+
+    .about-student {
+        background: #f8f9fa;
+        padding: 1rem;
+        border-radius: 8px;
+        border-left: 4px solid #00b894;
+        line-height: 1.6;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 1rem;
+        margin-top: 2rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid #eee;
+    }
+
+    .btn-sm {
+        padding: 0.3rem 0.8rem;
+        font-size: 0.8rem;
+        text-decoration: none;
+        border-radius: 4px;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    /* Progress and Statistics */
+    .stats-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+        margin-top: 2rem;
+    }
+
+    .stat-card {
+        background: white;
+        border-radius: 10px;
+        padding: 1.5rem;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        text-align: center;
+    }
+
+    .stat-number {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #00b894;
+        margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+        color: #666;
+        font-size: 0.9rem;
+    }
+
+    .progress-container {
+        margin-top: 1rem;
+    }
+
+    .progress-info {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0.5rem;
+        font-size: 0.9rem;
+    }
+
+    .progress-bar {
+        width: 100%;
+        height: 8px;
+        background: #e9ecef;
+        border-radius: 4px;
+        overflow: hidden;
+    }
+
+    .progress {
+        height: 100%;
+        background: #00b894;
+        transition: width 0.3s ease;
+    }
+
+    @media (max-width: 768px) {
+        .page-header {
+            flex-direction: column;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .profile-container {
+            grid-template-columns: 1fr;
+        }
+
+        .info-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .action-buttons {
+            flex-direction: column;
+        }
+
+        .groups-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .stats-container {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h2 class="page-title">🎓 O'quvchi: {{ student.first_name }} {{ student.last_name }}</h2>
+    <div class="action-buttons">
+        <a href="{% url 'admin_oquvchilar' %}" class="btn-secondary btn">
+            ← O'quvchilar ro'yxati
+        </a>
+    </div>
+</div>
+
+<!-- Messages Display -->
+<div class="messages-container">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{% if message.tags == 'error' %}error{% else %}{{ message.tags }}{% endif %}" id="message-{{ forloop.counter }}">
+                <div>
+                    {% if message.tags == 'success' %}
+                        ✅ 
+                    {% elif message.tags == 'error' %}
+                        ❌ 
+                    {% elif message.tags == 'warning' %}
+                        ⚠️ 
+                    {% endif %}
+                    {{ message }}
+                </div>
+                <button class="alert-close" onclick="this.parentElement.style.display='none'">×</button>
+            </div>
+        {% endfor %}
+    {% endif %}
+</div>
+
+<div class="profile-container">
+    <!-- Profile Card -->
+    <div class="profile-card">
+        <div class="profile-avatar">
+            {{ student.first_name|first }}{{ student.last_name|first }}
+        </div>
+        <div class="profile-name">
+            {{ student.first_name }} {{ student.last_name }}
+        </div>
+        <div class="profile-role">O'quvchi</div>
+        <div class="status-badge {% if student.status == 'approved' %}status-approved{% elif student.status == 'not_confirmed' %}status-not-confirmed{% else %}status-group{% endif %}"
+             onclick="toggleStatus('{{ student.uuid }}')"
+             title="Holatni o'zgartirish uchun bosing"
+             style="cursor: pointer;">
+            {% if student.status == 'approved' %}
+                ✅ Tasdiqlangan
+            {% elif student.status == 'not_confirmed' %}
+                ⏳ Tasdiqlanmadi
+            {% else %}
+                👥 Grupada
+            {% endif %}
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="quick-stats">
+            <div class="stat-item">
+                <span class="stat-label">Guruhlar:</span>
+                <span class="stat-value">{{ groups_count }} ta</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Qo'shilgan:</span>
+                <span class="stat-value">{{ student.created_ad|date:"Y-m-d" }}</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Admin:</span>
+                <span class="stat-value">{{ student.admistrator }}</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Information Card -->
+    <div class="info-card">
+        <!-- Asosiy Ma'lumotlar -->
+        <div class="info-section">
+            <h3>👤 Asosiy Ma'lumotlar</h3>
+            <div class="info-grid">
+                <div class="info-item">
+                    <span class="info-label">Ism</span>
+                    <span class="info-value">{{ student.first_name }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Familiya</span>
+                    <span class="info-value">{{ student.last_name }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Login</span>
+                    <span class="info-value">{{ student.username }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Telefon</span>
+                    <span class="info-value">{{ student.phone_number }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Holati</span>
+                    <span class="info-value">
+                        {% if student.status == 'approved' %}
+                            <span style="color: #28a745;">●</span> Tasdiqlangan
+                        {% elif student.status == 'not_confirmed' %}
+                            <span style="color: #ffc107;">●</span> Tasdiqlanmadi
+                        {% else %}
+                            <span style="color: #17a2b8;">●</span> Grupada
+                        {% endif %}
+                    </span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Rol</span>
+                    <span class="info-value">{{ student.role }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Administrator</span>
+                    <span class="info-value">{{ student.admistrator }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Qo'shilgan sana</span>
+                    <span class="info-value">{{ student.created_ad|date:"Y-m-d H:i" }}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Guruhlar Section -->
+        <div class="info-section">
+            <h3>📚 Guruhlar ({{ groups_count }} ta)</h3>
+            {% if student_groups %}
+            <div class="groups-grid">
+                {% for group in student_groups %}
+                <div class="group-card">
+                    <div class="group-name">{{ group.title }}</div>
+                    <div class="group-info">
+                        <span>Narxi: {{ group.group_price }} so'm</span>
+                        <span>
+                            {% if group.status == 'active' %}
+                            <span style="color: #28a745;">●</span> Faol
+                            {% else %}
+                            <span style="color: #dc3545;">●</span> Tugagan
+                            {% endif %}
+                        </span>
+                    </div>
+                    <div class="group-info">
+                        <span>{{ group.group_time }}</span>
+                        <span>{{ group.teacher.first_name }}</span>
+                    </div>
+                    <div style="margin-top: 0.5rem;">
+                        <a href="{% url 'admin_group_detail' group.id %}" class="btn-sm" style="background: #00b894; color: white; text-decoration: none; padding: 0.2rem 0.5rem; border-radius: 3px; font-size: 0.7rem;">
+                            Guruhni ko'rish
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="empty-groups">
+                <div>📚</div>
+                <p>O'quvchi hali hech qanday guruhga qo'shilmagan</p>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- O'quvchi haqida -->
+        {% if student.about_student %}
+        <div class="info-section">
+            <h3>📝 O'quvchi haqida</h3>
+            <div class="about-student">
+                {{ student.about_student|linebreaks }}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Statistics Section -->
+<div class="stats-container">
+    <div class="stat-card">
+        <div class="stat-number">{{ groups_count }}</div>
+        <div class="stat-label">Guruhlar Soni</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number">
+            {% if student.status == 'approved' %}
+                100%
+            {% elif student.status == 'not_confirmed' %}
+                50%
+            {% else %}
+                75%
+            {% endif %}
+        </div>
+        <div class="stat-label">Faollik Darajasi</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number">
+            {% if student.status == 'approved' %}
+                ✅
+            {% elif student.status == 'not_confirmed' %}
+                ⏳
+            {% else %}
+                👥
+            {% endif %}
+        </div>
+        <div class="stat-label">Joriy Holati</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number">{{ student.created_ad|timesince }}</div>
+        <div class="stat-label">Tizimda</div>
+    </div>
+</div>
+
+<!-- Additional Information -->
+<div style="margin-top: 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+    <!-- Payment Information -->
+    <div class="info-card">
+        <div class="info-section">
+            <h3>💰 To'lov Ma'lumotlari</h3>
+            <div class="info-grid">
+                <div class="info-item">
+                    <span class="info-label">Oxirgi to'lov:</span>
+                    <span class="info-value">500,000 so'm</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">To'lov holati:</span>
+                    <span class="info-value" style="color: #28a745;">To'langan</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Keyingi to'lov:</span>
+                    <span class="info-value">2024-02-01</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Qarzdorlik:</span>
+                    <span class="info-value" style="color: #dc3545;">0 so'm</span>
+                </div>
+            </div>
+            <div class="progress-container">
+                <div class="progress-info">
+                    <span>To'lovlar:</span>
+                    <span>100%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress" style="width: 100%; background: #28a745;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Attendance Information -->
+    <div class="info-card">
+        <div class="info-section">
+            <h3>📊 Davomat Statistikasi</h3>
+            <div class="info-grid">
+                <div class="info-item">
+                    <span class="info-label">Jami darslar:</span>
+                    <span class="info-value">24</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Qatnashgan:</span>
+                    <span class="info-value">22</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Qatnashmagan:</span>
+                    <span class="info-value">2</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Davomat foizi:</span>
+                    <span class="info-value" style="color: #28a745;">92%</span>
+                </div>
+            </div>
+            <div class="progress-container">
+                <div class="progress-info">
+                    <span>Davomat:</span>
+                    <span>92%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress" style="width: 92%; background: #17a2b8;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Activity Timeline -->
+<div class="info-card" style="margin-top: 2rem;">
+    <div class="info-section">
+        <h3>📈 So'nggi Faoliyat</h3>
+        <div style="border-left: 2px solid #00b894; margin-left: 1rem; padding-left: 1.5rem;">
+            <div style="margin-bottom: 1.5rem; position: relative;">
+                <div style="position: absolute; left: -1.5rem; top: 0; width: 10px; height: 10px; background: #00b894; border-radius: 50%;"></div>
+                <div style="font-weight: 600; color: #333;">Guruhga qo'shildi</div>
+                <div style="font-size: 0.8rem; color: #666;">Frontend 101 guruhi - 3 kun oldin</div>
+            </div>
+            <div style="margin-bottom: 1.5rem; position: relative;">
+                <div style="position: absolute; left: -1.5rem; top: 0; width: 10px; height: 10px; background: #00b894; border-radius: 50%;"></div>
+                <div style="font-weight: 600; color: #333;">To'lov qilindi</div>
+                <div style="font-size: 0.8rem; color: #666;">500,000 so'm - 1 hafta oldin</div>
+            </div>
+            <div style="margin-bottom: 1.5rem; position: relative;">
+                <div style="position: absolute; left: -1.5rem; top: 0; width: 10px; height: 10px; background: #00b894; border-radius: 50%;"></div>
+                <div style="font-weight: 600; color: #333;">Tasdiqlandi</div>
+                <div style="font-size: 0.8rem; color: #666;">Administrator tomonidan - 2 hafta oldin</div>
+            </div>
+            <div style="position: relative;">
+                <div style="position: absolute; left: -1.5rem; top: 0; width: 10px; height: 10px; background: #00b894; border-radius: 50%;"></div>
+                <div style="font-weight: 600; color: #333;">Ro'yxatdan o'tdi</div>
+                <div style="font-size: 0.8rem; color: #666;">Tizimga qo'shildi - 1 oy oldin</div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // O'quvchi holatini o'zgartirish
+    function toggleStatus(studentUuid) {
+        if (!confirm('O\'quvchi holatini o\'zgartirishni tasdiqlaysizmi?')) {
+            return;
+        }
+
+        // Bu yerda AJAX so'rov yuboriladi
+        fetch(`/admin/oquvchilar/${studentUuid}/toggle-status/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+                'Content-Type': 'application/json',
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert('Xatolik yuz berdi: ' + data.error);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Xatolik yuz berdi');
+        });
+    }
+
+    // Auto-hide messages after 5 seconds
+    document.addEventListener('DOMContentLoaded', function() {
+        const messages = document.querySelectorAll('.alert');
+        messages.forEach(function(message) {
+            setTimeout(function() {
+                message.style.display = 'none';
+            }, 5000);
+        });
+
+        // Add animation to progress bars
+        const progressBars = document.querySelectorAll('.progress');
+        progressBars.forEach(function(bar) {
+            const width = bar.style.width;
+            bar.style.width = '0';
+            setTimeout(function() {
+                bar.style.width = width;
+            }, 300);
+        });
+    });
+
+    // Print student information
+    function printStudentInfo() {
+        window.print();
+    }
+
+    // Export student data
+    function exportStudentData() {
+        if (confirm('O\'quvchi ma\'lumotlarini eksport qilmoqchimisiz?')) {
+            // Bu yerda haqiqiy eksport logikasi bo'ladi
+            alert('O\'quvchi ma\'lumotlari eksport qilindi!');
+            // window.location.href = '/export/student/{{ student.uuid }}/';
+        }
+    }
+
+    // Share student information
+    function shareStudentInfo() {
+        if (navigator.share) {
+            navigator.share({
+                title: '{{ student.first_name }} {{ student.last_name }} - O\'quvchi Ma\'lumotlari',
+                text: '{{ student.first_name }} {{ student.last_name }} o\'quvchisi haqida ma\'lumot',
+                url: window.location.href
+            })
+            .then(() => console.log('Muvaffaqiyatli ulashildi'))
+            .catch((error) => console.log('Ulashishda xatolik', error));
+        } else {
+            alert('Brauzeringiz ulashish funksiyasini qo\'llab-quvvatlamaydi');
+        }
+    }
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', function(e) {
+        // Ctrl + P to print
+        if (e.ctrlKey && e.key === 'p') {
+            e.preventDefault();
+            printStudentInfo();
+        }
+        
+        // Ctrl + E to export
+        if (e.ctrlKey && e.key === 'e') {
+            e.preventDefault();
+            exportStudentData();
+        }
+    });
+
+    // Copy student phone number
+    function copyPhoneNumber() {
+        const phoneNumber = '{{ student.phone_number }}';
+        navigator.clipboard.writeText(phoneNumber).then(function() {
+            alert('Telefon raqami nusxalandi: ' + phoneNumber);
+        }, function(err) {
+            console.error('Nusxalashda xatolik: ', err);
+        });
+    }
+</script>
+
+<style>
+    /* Additional responsive styles */
+    @media (max-width: 768px) {
+        .stats-container {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 480px) {
+        .stats-container {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    /* Print styles */
+    @media print {
+        .btn, .action-buttons, .alert-close {
+            display: none !important;
+        }
+        
+        .profile-card, .info-card {
+            box-shadow: none !important;
+            border: 1px solid #ccc !important;
+        }
+        
+        .status-badge {
+            cursor: default !important;
+        }
+    }
+
+    /* Hover effects */
+    .group-card:hover {
+        box-shadow: 0 6px 20px rgba(0, 184, 148, 0.15);
+    }
+
+    .stat-card:hover {
+        transform: translateY(-3px);
+        transition: transform 0.3s ease;
+    }
+</style>
+{% endblock %}

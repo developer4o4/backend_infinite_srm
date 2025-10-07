@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Talabani o'chirish</title>
+    <style>
+        /* Umumiy stillar */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+            color: #333;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        /* Sarlavha */
+        header {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+            padding: 1.5rem 2rem;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            opacity: 0.9;
+            font-size: 1rem;
+        }
+
+        /* Kontent */
+        .content {
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .warning-icon {
+            font-size: 4rem;
+            color: #e74c3c;
+            margin-bottom: 1.5rem;
+        }
+
+        .student-info {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-left: 4px solid #e74c3c;
+        }
+
+        .student-name {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .student-details {
+            color: #7f8c8d;
+            font-size: 1rem;
+        }
+
+        .warning-text {
+            color: #e74c3c;
+            font-weight: 500;
+            margin: 1.5rem 0;
+            line-height: 1.5;
+        }
+
+        /* Tugmalar */
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        button, .btn {
+            flex: 1;
+            padding: 0.9rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            text-align: center;
+            display: inline-block;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            box-shadow: 0 4px 10px rgba(231, 76, 60, 0.3);
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(231, 76, 60, 0.4);
+        }
+
+        .btn-secondary {
+            background: #95a5a6;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #7f8c8d;
+        }
+
+        /* Animatsiyalar */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .shake {
+            animation: shake 0.5s ease-in-out;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .container {
+                margin-top: 0;
+            }
+            
+            .content {
+                padding: 1.5rem;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+            
+            header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .student-name {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Talabani o'chirish</h1>
+            <p>Ogohlantirish: Bu haroratni orqaga qaytarib bo'lmaydi</p>
+        </header>
+        
+        <div class="content">
+            <div class="warning-icon">
+                <svg width="80" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 9V11M12 15H12.01M5.07183 19H18.9282C20.4678 19 21.4301 17.3333 20.6603 16L13.7321 4C12.9623 2.66667 11.0377 2.66667 10.2679 4L3.33975 16C2.56995 17.3333 3.53223 19 5.07183 19Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            
+            <div class="student-info">
+                <div class="student-name">{{ student.first_name }} {{ student.last_name }}</div>
+                <div class="student-details">
+                    Telefon: {{ student.phone_number }} | 
+                    Holati: {{ student.status }}
+                </div>
+            </div>
+            
+            <p class="warning-text">
+                Diqqat! Ushbu talabani o'chirish uni tizimdan butunlay olib tashlaydi. 
+                Bu amalni orqaga qaytarib bo'lmaydi.
+            </p>
+            
+            <form method="post" id="deleteForm">
+                {% csrf_token %}
+                <div class="button-group">
+                    <button type="submit" class="btn-danger" id="deleteBtn">Ha, o'chirilsin</button>
+                    <a href="{% url 'students' %}" class="btn btn-secondary">Yo'q, ortga qaytish</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const deleteBtn = document.getElementById('deleteBtn');
+            const deleteForm = document.getElementById('deleteForm');
+            let isConfirmed = false;
+            
+            // O'chirish tugmasini bosganda
+            deleteBtn.addEventListener('click', function(e) {
+                if (!isConfirmed) {
+                    e.preventDefault();
+                    
+                    // Tugmani tebratish effekti
+                    deleteBtn.classList.add('shake');
+                    setTimeout(() => {
+                        deleteBtn.classList.remove('shake');
+                    }, 500);
+                    
+                    // Tasdiqlash so'rovi
+                    const studentName = "{{ student.first_name }} {{ student.last_name }}";
+                    const userConfirmed = confirm(`Siz haqiqatdan ham "${studentName}" nomli talabani o'chirmoqchimisiz?\n\nBu amalni orqaga qaytarib bo'lmaydi!`);
+                    
+                    if (userConfirmed) {
+                        isConfirmed = true;
+                        // Tugma matnini o'zgartirish
+                        deleteBtn.innerHTML = 'Oʻchirilmoqda...';
+                        deleteBtn.disabled = true;
+                        
+                        // Formani yuborish
+                        setTimeout(() => {
+                            deleteForm.submit();
+                        }, 500);
+                    }
+                }
+            });
+            
+            // Ortga qaytish tugmasi bosilganda
+            const backBtn = document.querySelector('.btn-secondary');
+            backBtn.addEventListener('click', function(e) {
+                // Agar foydalanuvchi o'zgartirishlar kiritgan bo'lsa, chiqishni tasdiqlash
+                if (!isConfirmed) {
+                    const userConfirmed = confirm("Siz haqiqatdan ham sahifadan chiqmoqchimisiz? Kiritilgan o'zgartirishlar saqlanmaydi.");
+                    if (!userConfirmed) {
+                        e.preventDefault();
+                    }
+                }
+            });
+            
+            // Klaviatura yordamida boshqarish
+            document.addEventListener('keydown', function(e) {
+                // Escape tugmasi - ortga qaytish
+                if (e.key === 'Escape') {
+                    window.location.href = "{% url 'students' %}";
+                }
+                
+                // Enter tugmasi - o'chirishni tasdiqlash (faqat formaga fokus bo'lganda emas)
+                if (e.key === 'Enter' && e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
+                    if (!isConfirmed) {
+                        deleteBtn.click();
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

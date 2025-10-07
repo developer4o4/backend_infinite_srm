@@ -1,0 +1,258 @@
+<!-- templates/students/delete_confirm.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>O'quvchini O'chirish - Super Admin</title>
+    <style>
+        /* Include the same CSS styles as detail page */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        nav a:hover, nav a.active {
+            background-color: rgba(255,255,255,0.2);
+        }
+
+        main {
+            padding: 2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .page-title {
+            color: #ee5a24;
+        }
+
+        .btn {
+            padding: 0.7rem 1.5rem;
+            background: #ee5a24;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn:hover {
+            background: #d63031;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+        }
+
+        .btn-secondary:hover {
+            background: #545b62;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+
+        .confirmation-container {
+            background: white;
+            border-radius: 10px;
+            padding: 3rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+
+        .warning-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            color: #dc3545;
+        }
+
+        .confirmation-text {
+            margin-bottom: 2rem;
+        }
+
+        .confirmation-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            color: #666;
+            border-top: 1px solid #eee;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            nav ul {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .page-header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+
+            .confirmation-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div>
+                <h1>Super Admin Dashboard</h1>
+                <nav>
+                    <ul>
+                        <li><a href="{% url 'super_admin_dashboard' %}">Bosh sahifa</a></li>
+                        <li><a href="{% url 'adminstratorlar' %}">Adminstratorlar</a></li>
+                        <li><a href="{% url 'gruppalar' %}">Gruppalar</a></li>
+                        <li><a href="{% url 'oquvchilar' %}" class="active">O'quvchilar</a></li>
+                        <li><a href="{% url 'logout' %}">Chiqish</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="user-info">
+                <div class="user-avatar">
+                    {{ request.session.first_name|first }}{{ request.session.last_name|first }}
+                </div>
+                <div>
+                    <strong>{{ request.session.first_name }} {{ request.session.last_name }}</strong>
+                    <div style="font-size: 0.9rem; opacity: 0.8;">Super Admin</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="page-header">
+            <h2 class="page-title">O'quvchini O'chirish</h2>
+            <a href="{% url 'student_detail' student.uuid %}" class="btn-secondary btn">
+                ← Ortga qaytish
+            </a>
+        </div>
+
+        <div class="confirmation-container">
+            <div class="warning-icon">⚠️</div>
+            <h3 style="color: #dc3545; margin-bottom: 1rem;">O'quvchini O'chirish</h3>
+            <div class="confirmation-text">
+                <p style="margin-bottom: 1rem; font-size: 1.1rem;">
+                    Siz rostdan ham <strong>"{{ student.first_name }} {{ student.last_name }}"</strong> 
+                    o'quvchisini o'chirmoqchimisiz?
+                </p>
+                <p style="color: #666; margin-bottom: 0.5rem;">
+                    <strong>Login:</strong> {{ student.username }}
+                </p>
+                <p style="color: #666; margin-bottom: 0.5rem;">
+                    <strong>Telefon:</strong> {{ student.phone_number }}
+                </p>
+                <p style="color: #666;">
+                    <strong>Guruhlar soni:</strong> {{ student.groups.count }} ta
+                </p>
+            </div>
+            
+            {% if student.groups.exists %}
+            <div style="background: #fff3cd; color: #856404; padding: 1rem; border-radius: 5px; margin-bottom: 2rem;">
+                <strong>Diqqat!</strong> Bu o'quvchi {{ student.groups.count }} ta guruhga biriktirilgan. 
+                O'quvchini o'chirish bilan u barcha guruhlardan ham chiqariladi.
+            </div>
+            {% endif %}
+            
+            <form method="POST" style="display: inline;">
+                {% csrf_token %}
+                <div class="confirmation-actions">
+                    <a href="{% url 'student_detail' student.uuid %}" class="btn-secondary btn">
+                        Bekor qilish
+                    </a>
+                    <button type="submit" class="btn-danger btn">
+                        🗑️ O'quvchini O'chirish
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <p>Super Admin Dashboard &copy; 2024. Barcha huquqlar himoyalangan.</p>
+    </footer>
+</body>
+</html>

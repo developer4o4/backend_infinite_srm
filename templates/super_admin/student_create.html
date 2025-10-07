@@ -1,0 +1,672 @@
+<!-- templates/students/create.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yangi O'quvchi Qo'shish - Super Admin</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        nav a:hover, nav a.active {
+            background-color: rgba(255,255,255,0.2);
+        }
+
+        main {
+            padding: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .page-title {
+            color: #ee5a24;
+            font-size: 1.8rem;
+        }
+
+        .btn {
+            padding: 0.7rem 1.5rem;
+            background: #ee5a24;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn:hover {
+            background: #d63031;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+        }
+
+        .btn-secondary:hover {
+            background: #545b62;
+        }
+
+        .btn-success {
+            background: #28a745;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+        }
+
+        /* Messages Styling */
+        .messages-container {
+            margin-bottom: 2rem;
+        }
+
+        .alert {
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border-left: 4px solid;
+            animation: slideIn 0.3s ease-out;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border-left-color: #28a745;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border-left-color: #dc3545;
+        }
+
+        .alert-warning {
+            background: #fff3cd;
+            color: #856404;
+            border-left-color: #ffc107;
+        }
+
+        .alert-close {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            margin-left: 1rem;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+
+        .alert-close:hover {
+            opacity: 1;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Form Styling */
+        .form-container {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #555;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.7rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #ee5a24;
+            box-shadow: 0 0 0 2px rgba(238, 90, 36, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #eee;
+        }
+
+        .required::after {
+            content: " *";
+            color: #dc3545;
+        }
+
+        .form-help {
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 0.3rem;
+        }
+
+        .groups-select {
+            height: 120px;
+        }
+
+        .password-strength {
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+        }
+
+        .strength-weak {
+            color: #dc3545;
+        }
+
+        .strength-medium {
+            color: #ffc107;
+        }
+
+        .strength-strong {
+            color: #28a745;
+        }
+
+        .character-count {
+            text-align: right;
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 0.3rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            color: #666;
+            border-top: 1px solid #eee;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            nav ul {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .page-header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div>
+                <h1>Super Admin Dashboard</h1>
+                <nav>
+                    <ul>
+                        <li><a href="{% url 'super_admin_dashboard' %}">Bosh sahifa</a></li>
+                        <li><a href="{% url 'adminstratorlar' %}">Adminstratorlar</a></li>
+                        <li><a href="{% url 'gruppalar' %}">Gruppalar</a></li>
+                        <li><a href="{% url 'oquvchilar' %}" class="active">O'quvchilar</a></li>
+                        <li><a href="{% url 'logout' %}">Chiqish</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="user-info">
+                <div class="user-avatar">
+                    {{ request.session.first_name|first }}{{ request.session.last_name|first }}
+                </div>
+                <div>
+                    <strong>{{ request.session.first_name }} {{ request.session.last_name }}</strong>
+                    <div style="font-size: 0.9rem; opacity: 0.8;">Super Admin</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="page-header">
+            <h2 class="page-title">🎓 Yangi O'quvchi Qo'shish</h2>
+            <a href="{% url 'oquvchilar' %}" class="btn-secondary btn">
+                ← O'quvchilar ro'yxati
+            </a>
+        </div>
+
+        <!-- Messages Display -->
+        <div class="messages-container">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{% if message.tags == 'error' %}error{% else %}{{ message.tags }}{% endif %}" id="message-{{ forloop.counter }}">
+                        <div>
+                            {% if message.tags == 'success' %}
+                                ✅ 
+                            {% elif message.tags == 'error' %}
+                                ❌ 
+                            {% elif message.tags == 'warning' %}
+                                ⚠️ 
+                            {% endif %}
+                            {{ message }}
+                        </div>
+                        <button class="alert-close" onclick="this.parentElement.style.display='none'">×</button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+
+        <div class="form-container">
+            <form method="POST" id="studentForm">
+                {% csrf_token %}
+                
+                <!-- Personal Information -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="first_name" class="required">👤 Ism</label>
+                        <input type="text" id="first_name" name="first_name" class="form-control" required 
+                               value="{{ form_data.first_name }}" placeholder="O'quvchi ismini kiriting"
+                               maxlength="100">
+                        <div class="character-count">
+                            <span id="firstNameCount">0</span>/100
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="last_name" class="required">👤 Familiya</label>
+                        <input type="text" id="last_name" name="last_name" class="form-control" required
+                               value="{{ form_data.last_name }}" placeholder="O'quvchi familiyasini kiriting"
+                               maxlength="100">
+                        <div class="character-count">
+                            <span id="lastNameCount">0</span>/100
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Login and Phone -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="username" class="required">🔑 Login</label>
+                        <input type="text" id="username" name="username" class="form-control" required
+                               value="{{ form_data.username }}" placeholder="O'quvchi logini"
+                               maxlength="100">
+                        <div class="form-help">Login boʻyicha boshqa foydalanuvchi mavjud emasligiga ishonch hosil qiling.</div>
+                        <div class="character-count">
+                            <span id="usernameCount">0</span>/100
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone_number" class="required">📞 Telefon raqami</label>
+                        <input type="tel" id="phone_number" name="phone_number" class="form-control" required
+                               value="{{ form_data.phone_number }}" placeholder="+998901234567"
+                               pattern="\+998[0-9]{9}">
+                        <div class="form-help">Format: +998901234567</div>
+                    </div>
+                </div>
+
+                <!-- Password -->
+                <div class="form-group">
+                    <label for="password" class="required">🔒 Parol</label>
+                    <input type="password" id="password" name="password" class="form-control" required
+                           minlength="6" placeholder="Kamida 6 ta belgidan iborat parol"
+                           oninput="checkPasswordStrength(this.value)">
+                    <div class="form-help">Parol kamida 6 ta belgidan iborat boʻlishi kerak.</div>
+                    <div class="password-strength" id="passwordStrength">
+                        Parol kuchlilik darajasi: <span id="strengthText">Kiritilmagan</span>
+                    </div>
+                </div>
+
+                <!-- Groups and Status -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="groups">📚 Guruhlar</label>
+                        <select id="groups" name="groups" class="form-control groups-select" multiple>
+                            {% for group in groups %}
+                                <option value="{{ group.id }}" 
+                                    {% if form_data.groups and group.id|stringformat:"i" in form_data.groups %}selected{% endif %}>
+                                    {{ group.title }} - {{ group.teacher.first_name }} ({{ group.group_price }} so'm)
+                                </option>
+                            {% endfor %}
+                        </select>
+                        <div class="form-help">Bir nechta guruhni tanlash uchun Ctrl (yoki Cmd) tugmasini bosib tanlang</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="status" class="required">📊 Holati</label>
+                        <select id="status" name="status" class="form-control" required>
+                            <option value="">Holatni tanlang</option>
+                            {% for value, display in status_choices %}
+                                <option value="{{ value }}" {% if form_data.status == value %}selected{% endif %}>
+                                    {{ display }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                        <div class="form-help">O'quvchining dastlabki holati</div>
+                    </div>
+                </div>
+
+                <!-- About Student -->
+                <div class="form-group">
+                    <label for="about_student">📝 O'quvchi haqida</label>
+                    <textarea id="about_student" name="about_student" class="form-control" rows="4"
+                              placeholder="O'quvchi haqida qo'shimcha ma'lumotlar (ixtisosligi, qiziqishlari, etc.)"
+                              maxlength="1000">{{ form_data.about_student }}</textarea>
+                    <div class="character-count">
+                        <span id="aboutCount">0</span>/1000
+                    </div>
+                </div>
+
+                <!-- Form Actions -->
+                <div class="form-actions">
+                    <a href="{% url 'oquvchilar' %}" class="btn-secondary btn" id="cancelBtn">
+                        ↩️ Bekor qilish
+                    </a>
+                    <button type="submit" class="btn-success btn" id="submitBtn" onclick="return validateForm()">
+                        ✅ O'quvchini Qo'shish
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <p>Super Admin Dashboard &copy; 2024. Barcha huquqlar himoyalangan.</p>
+    </footer>
+
+    <script>
+        // Form validation
+        function validateForm() {
+            const firstName = document.getElementById('first_name').value.trim();
+            const lastName = document.getElementById('last_name').value.trim();
+            const username = document.getElementById('username').value.trim();
+            const phone = document.getElementById('phone_number').value.trim();
+            const password = document.getElementById('password').value;
+            const status = document.getElementById('status').value;
+
+            // Required fields validation
+            if (!firstName || !lastName || !username || !phone || !password || !status) {
+                alert('Iltimos, barcha majburiy maydonlarni to\'ldiring.');
+                return false;
+            }
+
+            // Phone number validation
+            const phoneRegex = /^\+998\d{9}$/;
+            if (!phoneRegex.test(phone)) {
+                alert('Iltimos, to\'g\'ri telefon raqamini kiriting (masalan: +998901234567).');
+                return false;
+            }
+
+            // Password length validation
+            if (password.length < 6) {
+                alert('Parol kamida 6 ta belgidan iborat bo\'lishi kerak.');
+                return false;
+            }
+
+            // Username availability check (you can add AJAX check here)
+            if (username.length < 3) {
+                alert('Login kamida 3 ta belgidan iborat bo\'lishi kerak.');
+                return false;
+            }
+
+            return true;
+        }
+
+        // Password strength checker
+        function checkPasswordStrength(password) {
+            const strengthElement = document.getElementById('strengthText');
+            let strength = 0;
+            let feedback = '';
+
+            if (password.length >= 6) strength++;
+            if (password.length >= 8) strength++;
+            if (password.match(/[a-z]/) && password.match(/[A-Z]/)) strength++;
+            if (password.match(/\d/)) strength++;
+            if (password.match(/[^a-zA-Z\d]/)) strength++;
+
+            switch (strength) {
+                case 0:
+                case 1:
+                    feedback = 'Zaif';
+                    strengthElement.className = 'strength-weak';
+                    break;
+                case 2:
+                case 3:
+                    feedback = 'O\'rtacha';
+                    strengthElement.className = 'strength-medium';
+                    break;
+                case 4:
+                case 5:
+                    feedback = 'Kuchli';
+                    strengthElement.className = 'strength-strong';
+                    break;
+                default:
+                    feedback = 'Zaif';
+                    strengthElement.className = 'strength-weak';
+            }
+
+            strengthElement.textContent = feedback;
+        }
+
+        // Character counters
+        function setupCharacterCounters() {
+            const fields = [
+                { id: 'first_name', counter: 'firstNameCount', max: 100 },
+                { id: 'last_name', counter: 'lastNameCount', max: 100 },
+                { id: 'username', counter: 'usernameCount', max: 100 },
+                { id: 'about_student', counter: 'aboutCount', max: 1000 }
+            ];
+
+            fields.forEach(field => {
+                const input = document.getElementById(field.id);
+                const counter = document.getElementById(field.counter);
+                
+                if (input && counter) {
+                    // Set initial value
+                    counter.textContent = input.value.length;
+                    
+                    // Update on input
+                    input.addEventListener('input', function() {
+                        counter.textContent = this.value.length;
+                        
+                        // Visual feedback when approaching limit
+                        if (this.value.length > field.max * 0.9) {
+                            counter.style.color = '#dc3545';
+                            counter.style.fontWeight = 'bold';
+                        } else if (this.value.length > field.max * 0.7) {
+                            counter.style.color = '#ffc107';
+                            counter.style.fontWeight = 'bold';
+                        } else {
+                            counter.style.color = '#666';
+                            counter.style.fontWeight = 'normal';
+                        }
+                    });
+                }
+            });
+        }
+
+        // Phone number formatting
+        document.getElementById('phone_number').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.startsWith('998')) {
+                value = '+' + value;
+            } else if (!value.startsWith('+998') && value.length > 0) {
+                value = '+998' + value;
+            }
+            e.target.value = value.substring(0, 13);
+        });
+
+        // Real-time username availability check (simplified)
+        document.getElementById('username').addEventListener('blur', function() {
+            const username = this.value.trim();
+            if (username.length < 3) return;
+            
+            // In a real application, you would make an AJAX request here
+            // to check if the username is available
+            console.log('Checking username availability:', username);
+        });
+
+        // Form submission loading state
+        document.getElementById('studentForm').addEventListener('submit', function() {
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.innerHTML = '⏳ Saqlanmoqda...';
+            submitBtn.disabled = true;
+        });
+
+        // Auto-hide messages
+        document.addEventListener('DOMContentLoaded', function() {
+            const messages = document.querySelectorAll('.alert');
+            messages.forEach(function(message) {
+                setTimeout(function() {
+                    message.style.display = 'none';
+                }, 5000);
+            });
+
+            // Setup character counters
+            setupCharacterCounters();
+
+            // Set initial password strength
+            checkPasswordStrength(document.getElementById('password').value);
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            // Ctrl + Enter to submit form
+            if (e.ctrlKey && e.key === 'Enter') {
+                e.preventDefault();
+                document.getElementById('submitBtn').click();
+            }
+            
+            // Escape to cancel
+            if (e.key === 'Escape') {
+                document.getElementById('cancelBtn').click();
+            }
+        });
+
+        // Enhance user experience with auto-focus
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('first_name').focus();
+        });
+
+        // Groups selection helper
+        document.addEventListener('DOMContentLoaded', function() {
+            const groupsSelect = document.getElementById('groups');
+            if (groupsSelect) {
+                // Add search functionality for groups (basic)
+                groupsSelect.addEventListener('focus', function() {
+                    this.size = 6; // Show more options when focused
+                });
+                
+                groupsSelect.addEventListener('blur', function() {
+                    this.size = 1;
+                });
+            }
+        });
+    </script>
+</body>
+</html>
