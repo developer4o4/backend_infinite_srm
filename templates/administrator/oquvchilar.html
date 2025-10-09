@@ -1,4 +1,4 @@
-<!-- templates/oquvchilar.html -->
+<!-- templates/administrator/oquvchilar.html -->
 {% extends 'administrator/base.html' %}
 {% load static %}
 
@@ -23,6 +23,10 @@
         gap: 1rem;
         margin-bottom: 2rem;
         flex-wrap: wrap;
+        background: white;
+        padding: 1.5rem;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
     }
 
     .filter-group {
@@ -62,6 +66,19 @@
         background: #00a085;
     }
 
+    .btn-secondary {
+        background: #6c757d;
+    }
+
+    .btn-secondary:hover {
+        background: #545b62;
+    }
+
+    .btn-sm {
+        padding: 0.3rem 0.8rem;
+        font-size: 0.8rem;
+    }
+
     .table-container {
         background: white;
         border-radius: 10px;
@@ -91,6 +108,75 @@
         background: #f8f9fa;
     }
 
+    .status-approved {
+        background: #d4edda;
+        color: #155724;
+        padding: 0.3rem 0.8rem;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 500;
+    }
+
+    .status-not_confirmed {
+        background: #fff3cd;
+        color: #856404;
+        padding: 0.3rem 0.8rem;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 500;
+    }
+
+    .status-group {
+        background: #d1ecf1;
+        color: #0c5460;
+        padding: 0.3rem 0.8rem;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 500;
+    }
+
+    .groups-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.3rem;
+    }
+
+    .group-badge {
+        background: #e9ecef;
+        color: #495057;
+        padding: 0.2rem 0.5rem;
+        border-radius: 15px;
+        font-size: 0.75rem;
+        border: 1px solid #dee2e6;
+    }
+
+    .stats-container {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+    }
+
+    .stat-card {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        flex: 1;
+        min-width: 200px;
+    }
+
+    .stat-number {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #00b894;
+    }
+
+    .stat-label {
+        color: #6c757d;
+        font-size: 0.9rem;
+    }
+
     @media (max-width: 768px) {
         .page-header {
             flex-direction: column;
@@ -101,55 +187,86 @@
         .filters {
             flex-direction: column;
         }
+
+        .stats-container {
+            flex-direction: column;
+        }
     }
-    .status-approved {
-            background: #d4edda;
-            color: #155724;
-            padding: 0.3rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 500;
-        }
-
-        .status-not-confirmed {
-            background: #fff3cd;
-            color: #856404;
-            padding: 0.3rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 500;
-        }
-
-        .status-group {
-            background: #d1ecf1;
-            color: #0c5460;
-            padding: 0.3rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 500;
-        }
 </style>
 {% endblock %}
 
 {% block content %}
 <div class="page-header">
     <h2 class="page-title">O'quvchilar Boshqaruvi</h2>
-    <button class="btn">
+    <a href="{% url 'student_create' %}" class="btn">
         <span>+</span> Yangi O'quvchi
-    </button>
+    </a>
 </div>
 
-<div class="filters">
-    <div class="filter-group">
-        <label for="groupFilter">Guruh bo'yicha</label>
-        <select id="groupFilter" class="form-control">
-            <option value="">Barcha guruhlar</option>
-            <option value="1">Frontend 101</option>
-            <option value="2">Backend Pro</option>
-        </select>
+<!-- Statistika -->
+<div class="stats-container">
+    <div class="stat-card">
+        <div class="stat-number">{{ total_students }}</div>
+        <div class="stat-label">Jami O'quvchilar</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number">{{ approved_students }}</div>
+        <div class="stat-label">Tasdiqlangan</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number">{{ group_students }}</div>
+        <div class="stat-label">Guruhda</div>
     </div>
 </div>
 
+<!-- Filter Form -->
+<form method="GET" action="{% url 'admin_oquvchilar' %}">
+    <div class="filters">
+        <div class="filter-group">
+            <label for="search">Qidiruv</label>
+            <input type="text" 
+                   id="search" 
+                   name="search" 
+                   class="form-control" 
+                   placeholder="Ism, familiya, telefon..." 
+                   value="{{ search_query }}">
+        </div>
+        
+        <div class="filter-group">
+            <label for="group">Guruh</label>
+            <select id="group" name="group" class="form-control">
+                <option value="">Barcha guruhlar</option>
+                {% for group in groups %}
+                    <option value="{{ group.id }}" 
+                            {% if group_filter == group.id|stringformat:"i" %}selected{% endif %}>
+                        {{ group.title }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="filter-group">
+            <label for="status">Holati</label>
+            <select id="status" name="status" class="form-control">
+                <option value="">Barchasi</option>
+                <option value="approved" {% if status_filter == 'approved' %}selected{% endif %}>Tasdiqlangan</option>
+                <option value="not_confirmed" {% if status_filter == 'not_confirmed' %}selected{% endif %}>Tasdiqlanmagan</option>
+                <option value="group" {% if status_filter == 'group' %}selected{% endif %}>Guruhda</option>
+            </select>
+        </div>
+        
+        <div class="filter-group" style="justify-content: flex-end;">
+            <button type="submit" class="btn" style="margin-top: 1.7rem;">
+                <span>🔍</span> Qidirish
+            </button>
+            <a href="{% url 'admin_oquvchilar' %}" class="btn btn-secondary" style="margin-top: 0.5rem;">
+                <span>🔄</span> Tozalash
+            </a>
+        </div>
+    </div>
+</form>
+
+<!-- Jadval -->
 <div class="table-container">
     <table>
         <thead>
@@ -165,25 +282,43 @@
         <tbody>
             {% for student in students %}
                 <tr>
-                    <td>{{forloop.counter}}</td>
-                    <td>{{student.first_name}} {{student.last_name}}</td>
-                    <td>{{student.phone_number}}</td>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ student.first_name }} {{ student.last_name }}</td>
+                    <td>{{ student.phone_number }}</td>
                     <td>
-                        {% for i in groups %}
-                            {{i.title}},
-                        {% endfor %}
+                        <div class="groups-list">
+                            {% for group in student.groups.all %}
+                                <span class="group-badge">{{ group.title }}</span>
+                            {% empty %}
+                                <span style="color: #6c757d; font-style: italic;">Guruh yo'q</span>
+                            {% endfor %}
+                        </div>
                     </td>
-                    <td><span >
-                        {% if student.status == 'approved' %}
-                                    <span class="status-approved">Tasdiqlangan</span>
-                                {% elif student.status == 'not_confirmed' %}
-                                    <span class="status-not-confirmed">Tasdiqlanmadi</span>
-                                {% elif student.status == 'group' %}
-                                    <span class="status-group">Grupada</span>
-                                {% endif %}
-                    </span></td>
                     <td>
-                        <a href="{% url 'admin_student_detail' student.uuid %}" class="btn" style="padding: 0.3rem 0.8rem; font-size: 0.8rem;">Ko'rish</a>
+                        {% if student.status == 'approved' %}
+                            <span class="status-approved">Tasdiqlangan</span>
+                        {% elif student.status == 'not_confirmed' %}
+                            <span class="status-not_confirmed">Tasdiqlanmadi</span>
+                        {% elif student.status == 'group' %}
+                            <span class="status-group">Guruhda</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{% url 'admin_student_detail' student.uuid %}" class="btn btn-sm">
+                            👁️ Ko'rish
+                        </a>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="6" style="text-align: center; padding: 2rem;">
+                        <p style="color: #6c757d; font-style: italic;">
+                            {% if search_query or group_filter or status_filter %}
+                                Hech qanday o'quvchi topilmadi. Filterlarni o'zgartirib ko'ring.
+                            {% else %}
+                                Hozircha hech qanday o'quvchi mavjud emas.
+                            {% endif %}
+                        </p>
                     </td>
                 </tr>
             {% endfor %}

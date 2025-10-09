@@ -283,12 +283,12 @@
                 <span class="stat-value">{{ admin_user.username }}</span>
             </div>
             <div class="stat-item">
-                <span class="stat-label">Email:</span>
-                <span class="stat-value">{{ admin_user.email|default:"Noma'lum" }}</span>
+                <span class="stat-label">Telefon raqam:</span>
+                <span class="stat-value">{{ admin_user.phone_number }}</span>
             </div>
             <div class="stat-item">
                 <span class="stat-label">Qo'shilgan:</span>
-                <span class="stat-value">{{ admin_user.date_joined|date:"Y-m-d" }}</span>
+                <span class="stat-value">{{ admin_user.created_at|date:"Y-m-d" }}</span>
             </div>
         </div>
     </div>

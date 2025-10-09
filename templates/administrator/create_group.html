@@ -1,0 +1,339 @@
+{% extends 'administrator/base.html' %}
+{% load static %}
+
+{% block title %}Yangi Guruh - SmartCoder CRM{% endblock %}
+
+{% block content %}
+<div class="main-content">
+    
+    
+    <!-- Content -->
+    <div class="content-header">
+        <div>
+            <a href="{% url 'admin_gruppalar' %}" class="btn btn-outline">
+                <i class="fas fa-arrow-left"></i> Guruhlar ro'yxati
+            </a>
+        </div>
+    </div>
+    
+    <!-- Messages -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-error{% endif %}">
+                <i class="fas {% if message.tags == 'success' %}fa-check-circle{% else %}fa-exclamation-circle{% endif %}"></i>
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+    
+    <!-- Form Container -->
+    <div class="form-container">
+        <form method="POST">
+            {% csrf_token %}
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="title" class="form-label">Guruh nomi *</label>
+                    <input type="text" id="title" name="title" class="form-control" 
+                           placeholder="Guruh nomini kiriting" 
+                           value="{{ form_data.title|default:'' }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="teacher" class="form-label">O'qituvchi *</label>
+                    <select id="teacher" name="teacher" class="form-select" required>
+                        <option value="">O'qituvchini tanlang</option>
+                        {% for teacher in teachers %}
+                            <option value="{{ teacher.id }}" 
+                                    {% if form_data.teacher == teacher.id|stringformat:"i" %}selected{% endif %}>
+                                {{ teacher.first_name }} {{ teacher.last_name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="group_price" class="form-label">Guruh narxi (so'm) *</label>
+                    <input type="text" id="group_price" name="group_price" class="form-control" 
+                           value="{{ form_data.group_price|default:'' }}" 
+                           placeholder="Guruh narxini kiriting" required>
+                    <small class="form-text">Masalan: 500,000</small>
+                </div>
+                <div class="form-group">
+                    <label for="status" class="form-label">Holati *</label>
+                    <select id="status" name="status" class="form-select" required>
+                        <option value="active" {% if form_data.status == 'active' %}selected{% endif %}>Faol</option>
+                        <option value="inactive" {% if form_data.status == 'inactive' %}selected{% endif %}>Tugagan</option>
+                        <option value="pending" {% if form_data.status == 'pending' %}selected{% endif %}>Kutilyapti</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="group_time" class="form-label">Dars jadvali *</label>
+                <input type="text" id="group_time" name="group_time" class="form-control" 
+                       placeholder="Masalan: Dushanba, Chorshanba, Juma 14:00-16:00"
+                       value="{{ form_data.group_time|default:'' }}" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="description" class="form-label">Guruh haqida</label>
+                <textarea id="description" name="description" class="form-control" rows="3" 
+                          placeholder="Guruh haqida qo'shimcha ma'lumot">{{ form_data.description|default:'' }}</textarea>
+            </div>
+            
+            <div class="form-actions">
+                <a href="{% url 'admin_gruppalar' %}" class="btn btn-outline">Bekor qilish</a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Guruhni saqlash
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    .form-container {
+        background: white;
+        border-radius: 10px;
+        padding: 30px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        max-width: 800px;
+        margin: 0 auto;
+    }
+    
+    .form-group {
+        margin-bottom: 20px;
+    }
+    
+    .form-row {
+        display: flex;
+        gap: 20px;
+    }
+    
+    .form-row .form-group {
+        flex: 1;
+    }
+    
+    .form-label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+        color: var(--dark);
+    }
+    
+    .form-control {
+        width: 100%;
+        padding: 12px 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 16px;
+        transition: border 0.3s;
+    }
+    
+    .form-control:focus {
+        border-color: var(--primary);
+        outline: none;
+    }
+    
+    .form-select {
+        width: 100%;
+        padding: 12px 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 16px;
+        background-color: white;
+        cursor: pointer;
+    }
+    
+    .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 15px;
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px solid #eee;
+    }
+    
+    .form-text {
+        display: block;
+        margin-top: 5px;
+        font-size: 12px;
+        color: var(--gray);
+    }
+    
+    .avatar-placeholder {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: var(--primary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        margin-right: 10px;
+    }
+    
+    /* Alert styles */
+    .alert {
+        padding: 15px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+    }
+    
+    .alert-success {
+        background-color: rgba(76, 201, 240, 0.1);
+        color: var(--success);
+        border-left: 4px solid var(--success);
+    }
+    
+    .alert-error {
+        background-color: rgba(247, 37, 133, 0.1);
+        color: var(--warning);
+        border-left: 4px solid var(--warning);
+    }
+    
+    .alert i {
+        margin-right: 10px;
+        font-size: 18px;
+    }
+    
+    /* Responsive design */
+    @media (max-width: 768px) {
+        .form-row {
+            flex-direction: column;
+            gap: 0;
+        }
+        
+        .form-actions {
+            flex-direction: column;
+        }
+        
+        .btn {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('form');
+        const groupPriceInput = document.getElementById('group_price');
+        
+        // Format number with commas on blur
+        groupPriceInput.addEventListener('blur', function() {
+            if (this.value) {
+                // Remove any existing commas and format
+                const numericValue = this.value.replace(/\D/g, '');
+                if (numericValue) {
+                    this.value = parseInt(numericValue).toLocaleString('uz-UZ');
+                }
+            }
+        });
+        
+        // Remove commas on focus for editing
+        groupPriceInput.addEventListener('focus', function() {
+            if (this.value) {
+                this.value = this.value.replace(/\D/g, '');
+            }
+        });
+        
+        // Remove commas before form submission
+        form.addEventListener('submit', function() {
+            if (groupPriceInput.value) {
+                groupPriceInput.value = groupPriceInput.value.replace(/\D/g, '');
+            }
+        });
+        
+        // Real-time validation
+        const titleInput = document.getElementById('title');
+        const teacherSelect = document.getElementById('teacher');
+        const statusSelect = document.getElementById('status');
+        const groupTimeInput = document.getElementById('group_time');
+        
+        function validateForm() {
+            let isValid = true;
+            
+            // Reset previous error states
+            document.querySelectorAll('.form-control, .form-select').forEach(element => {
+                element.classList.remove('error');
+            });
+            
+            // Validate required fields
+            if (!titleInput.value.trim()) {
+                titleInput.classList.add('error');
+                isValid = false;
+            }
+            
+            if (!teacherSelect.value) {
+                teacherSelect.classList.add('error');
+                isValid = false;
+            }
+            
+            if (!groupPriceInput.value.trim() || isNaN(groupPriceInput.value.replace(/\D/g, ''))) {
+                groupPriceInput.classList.add('error');
+                isValid = false;
+            }
+            
+            if (!statusSelect.value) {
+                statusSelect.classList.add('error');
+                isValid = false;
+            }
+            
+            if (!groupTimeInput.value.trim()) {
+                groupTimeInput.classList.add('error');
+                isValid = false;
+            }
+            
+            return isValid;
+        }
+        
+        // Add error style
+        const style = document.createElement('style');
+        style.textContent = `
+            .error {
+                border-color: var(--warning) !important;
+                background-color: rgba(247, 37, 133, 0.05);
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Validate on form submit
+        form.addEventListener('submit', function(e) {
+            if (!validateForm()) {
+                e.preventDefault();
+                // Show error message
+                if (!document.querySelector('.alert-error:not(.global-error)')) {
+                    const errorAlert = document.createElement('div');
+                    errorAlert.className = 'alert alert-error global-error';
+                    errorAlert.innerHTML = '<i class="fas fa-exclamation-circle"></i> Iltimos, barcha kerakli maydonlarni to\'g\'ri to\'ldiring.';
+                    form.parentNode.insertBefore(errorAlert, form);
+                }
+            }
+        });
+        
+        // Remove error state when user starts typing/selecting
+        document.querySelectorAll('.form-control, .form-select').forEach(element => {
+            element.addEventListener('input', function() {
+                this.classList.remove('error');
+                const globalError = document.querySelector('.alert-error.global-error');
+                if (globalError) {
+                    globalError.remove();
+                }
+            });
+            
+            element.addEventListener('change', function() {
+                this.classList.remove('error');
+                const globalError = document.querySelector('.alert-error.global-error');
+                if (globalError) {
+                    globalError.remove();
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

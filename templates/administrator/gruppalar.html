@@ -280,10 +280,13 @@
 {% endblock %}
 
 {% block content %}
+
 <div class="page-header">
     <h2 class="page-title">📚 Guruhlar Boshqaruvi</h2>
+    <a href="{% url 'create_group' %}" class="btn">
+        <span>+</span> Yangi Gruppa 
+    </a>
 </div>
-
 <!-- Statistika -->
 <div class="stats-grid">
     <div class="stat-card">
@@ -376,6 +379,9 @@
             <div class="group-actions">
                 <a href="{% url 'admin_group_detail' group.id %}" class="btn-sm btn-view" style="flex: 1; justify-content: center;">
                     👁️ Guruhni Ko'rish
+                </a>
+                <a href="{% url 'admin_group_detail' group.id %}" class="btn-sm btn-view" style="flex: 1; justify-content: center;">
+                    ✏️ Tahrirlash
                 </a>
             </div>
         </div>

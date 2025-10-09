@@ -6,35 +6,44 @@
 
 {% block extra_css %}
 <style>
+    /* Page Header */
     .page-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
         margin-bottom: 2rem;
+        padding: 1rem 0;
+        border-bottom: 2px solid #f0f0f0;
     }
 
     .page-title {
         color: #00b894;
         font-size: 1.8rem;
+        font-weight: 600;
+        margin: 0;
     }
 
+    /* Buttons */
     .btn {
         padding: 0.7rem 1.5rem;
         background: #00b894;
         color: white;
         text-decoration: none;
-        border-radius: 5px;
+        border-radius: 8px;
         border: none;
         cursor: pointer;
-        transition: all 0.3s;
+        transition: all 0.3s ease;
         display: inline-flex;
         align-items: center;
         gap: 0.5rem;
+        font-size: 0.9rem;
+        font-weight: 500;
     }
 
     .btn:hover {
         background: #00a085;
         transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 184, 148, 0.3);
     }
 
     .btn-secondary {
@@ -43,6 +52,7 @@
 
     .btn-secondary:hover {
         background: #545b62;
+        box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
     }
 
     .btn-warning {
@@ -52,9 +62,30 @@
 
     .btn-warning:hover {
         background: #e0a800;
+        box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3);
     }
 
-    /* Messages Styling */
+    .btn-danger {
+        background: #dc3545;
+        color: white;
+    }
+
+    .btn-danger:hover {
+        background: #c82333;
+        box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+    }
+
+    .btn-sm {
+        padding: 0.3rem 0.8rem;
+        font-size: 0.8rem;
+        text-decoration: none;
+        border-radius: 4px;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    /* Messages */
     .messages-container {
         margin-bottom: 2rem;
     }
@@ -69,6 +100,7 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
+        backdrop-filter: blur(10px);
     }
 
     .alert-success {
@@ -97,10 +129,18 @@
         margin-left: 1rem;
         opacity: 0.7;
         transition: opacity 0.3s;
+        padding: 0;
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .alert-close:hover {
         opacity: 1;
+        background: rgba(0,0,0,0.1);
+        border-radius: 50%;
     }
 
     @keyframes slideIn {
@@ -124,10 +164,16 @@
 
     .profile-card {
         background: white;
-        border-radius: 10px;
+        border-radius: 15px;
         padding: 2rem;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.1);
         text-align: center;
+        border: 1px solid #e9ecef;
+        transition: transform 0.3s ease;
+    }
+
+    .profile-card:hover {
+        transform: translateY(-5px);
     }
 
     .profile-avatar {
@@ -142,60 +188,75 @@
         color: white;
         margin: 0 auto 1rem;
         font-weight: bold;
+        box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
     }
 
     .profile-name {
         font-size: 1.5rem;
-        font-weight: 600;
+        font-weight: 700;
         margin-bottom: 0.5rem;
-        color: #333;
+        color: #2d3748;
+        background: linear-gradient(135deg, #00b894, #00a085);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
     }
 
     .profile-role {
         color: #00b894;
-        font-weight: 500;
+        font-weight: 600;
         margin-bottom: 1rem;
+        font-size: 1.1rem;
     }
 
     .status-badge {
         display: inline-block;
-        padding: 0.5rem 1rem;
-        border-radius: 20px;
+        padding: 0.6rem 1.2rem;
+        border-radius: 25px;
         font-size: 0.9rem;
-        font-weight: 500;
+        font-weight: 600;
         margin-bottom: 1.5rem;
         cursor: pointer;
-        transition: all 0.3s;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
 
     .status-badge:hover {
         transform: scale(1.05);
+        box-shadow: 0 6px 20px rgba(0,0,0,0.15);
     }
 
     .status-approved {
-        background: #d4edda;
+        background: linear-gradient(135deg, #d4edda, #c3e6cb);
         color: #155724;
+        border: 2px solid #28a745;
     }
 
     .status-not-confirmed {
-        background: #fff3cd;
+        background: linear-gradient(135deg, #fff3cd, #ffeaa7);
         color: #856404;
+        border: 2px solid #ffc107;
     }
 
     .status-group {
-        background: #d1ecf1;
+        background: linear-gradient(135deg, #d1ecf1, #bee5eb);
         color: #0c5460;
+        border: 2px solid #17a2b8;
     }
 
     .quick-stats {
         margin-top: 2rem;
+        background: #f8f9fa;
+        padding: 1.5rem;
+        border-radius: 10px;
+        border: 1px solid #e9ecef;
     }
 
     .stat-item {
         display: flex;
         justify-content: space-between;
-        padding: 0.7rem 0;
-        border-bottom: 1px solid #f5f5f5;
+        padding: 0.8rem 0;
+        border-bottom: 1px solid #dee2e6;
+        align-items: center;
     }
 
     .stat-item:last-child {
@@ -203,176 +264,516 @@
     }
 
     .stat-label {
-        color: #666;
+        color: #6c757d;
+        font-weight: 500;
     }
 
     .stat-value {
-        font-weight: 600;
+        font-weight: 700;
         color: #00b894;
+        font-size: 1.1rem;
     }
 
+    /* Info Card */
     .info-card {
         background: white;
-        border-radius: 10px;
+        border-radius: 15px;
         padding: 2rem;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        border: 1px solid #e9ecef;
+        transition: transform 0.3s ease;
+    }
+
+    .info-card:hover {
+        transform: translateY(-3px);
     }
 
     .info-section {
-        margin-bottom: 2rem;
+        margin-bottom: 2.5rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 2px solid #f8f9fa;
     }
 
     .info-section:last-child {
         margin-bottom: 0;
+        border-bottom: none;
     }
 
     .info-section h3 {
         color: #00b894;
-        margin-bottom: 1rem;
-        padding-bottom: 0.5rem;
-        border-bottom: 2px solid #f0f0f0;
+        margin-bottom: 1.2rem;
+        padding-bottom: 0.7rem;
+        border-bottom: 3px solid #00b894;
+        font-size: 1.3rem;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
     }
 
     .info-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 1rem;
+        gap: 1.2rem;
     }
 
     .info-item {
         display: flex;
         flex-direction: column;
+        padding: 1rem;
+        background: #f8f9fa;
+        border-radius: 8px;
+        border-left: 4px solid #00b894;
+        transition: all 0.3s ease;
+    }
+
+    .info-item:hover {
+        background: #e9ecef;
+        transform: translateX(5px);
     }
 
     .info-label {
-        font-weight: 500;
-        color: #666;
-        margin-bottom: 0.3rem;
-        font-size: 0.9rem;
+        font-weight: 600;
+        color: #495057;
+        margin-bottom: 0.4rem;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
     }
 
     .info-value {
-        font-weight: 600;
-        color: #333;
+        font-weight: 700;
+        color: #2d3748;
+        font-size: 1rem;
     }
 
+    /* Groups */
     .groups-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 1rem;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.2rem;
         margin-top: 1rem;
     }
 
     .group-card {
-        background: #f8f9fa;
-        border: 1px solid #e9ecef;
-        border-radius: 8px;
-        padding: 1rem;
-        transition: all 0.3s;
+        background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+        border: 1px solid #dee2e6;
+        border-radius: 12px;
+        padding: 1.2rem;
+        transition: all 0.3s ease;
         border-left: 4px solid #00b894;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        position: relative;
+        overflow: hidden;
     }
 
     .group-card:hover {
         border-color: #00b894;
-        transform: translateY(-2px);
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 184, 148, 0.2);
+    }
+
+    .group-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #00b894, #00a085);
     }
 
     .group-name {
-        font-weight: 600;
+        font-weight: 700;
         color: #00b894;
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.7rem;
+        font-size: 1.1rem;
     }
 
     .group-info {
         display: flex;
         justify-content: space-between;
-        font-size: 0.9rem;
-        color: #666;
+        font-size: 0.85rem;
+        color: #6c757d;
+        margin-bottom: 0.3rem;
     }
 
     .empty-groups {
         text-align: center;
-        padding: 2rem;
-        color: #666;
+        padding: 3rem;
+        color: #6c757d;
+        background: #f8f9fa;
+        border-radius: 12px;
+        border: 2px dashed #dee2e6;
+    }
+
+    .empty-groups div {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        opacity: 0.7;
     }
 
     .about-student {
-        background: #f8f9fa;
-        padding: 1rem;
-        border-radius: 8px;
+        background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+        padding: 1.5rem;
+        border-radius: 12px;
         border-left: 4px solid #00b894;
-        line-height: 1.6;
+        line-height: 1.7;
+        color: #495057;
+        font-size: 0.95rem;
+        box-shadow: inset 0 2px 10px rgba(0,0,0,0.05);
     }
 
+    /* Action Buttons */
     .action-buttons {
         display: flex;
         gap: 1rem;
         margin-top: 2rem;
         padding-top: 1.5rem;
-        border-top: 1px solid #eee;
-    }
-
-    .btn-sm {
-        padding: 0.3rem 0.8rem;
-        font-size: 0.8rem;
-        text-decoration: none;
-        border-radius: 4px;
-        border: none;
-        cursor: pointer;
-        transition: all 0.3s;
+        border-top: 2px solid #f0f0f0;
     }
 
     /* Progress and Statistics */
     .stats-container {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
         gap: 1.5rem;
         margin-top: 2rem;
     }
 
     .stat-card {
         background: white;
-        border-radius: 10px;
-        padding: 1.5rem;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        border-radius: 15px;
+        padding: 1.8rem;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.1);
         text-align: center;
+        border: 1px solid #e9ecef;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+    }
+
+    .stat-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #00b894, #00a085);
     }
 
     .stat-number {
-        font-size: 2rem;
-        font-weight: bold;
+        font-size: 2.2rem;
+        font-weight: 800;
         color: #00b894;
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.7rem;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
 
     .stat-label {
-        color: #666;
+        color: #6c757d;
         font-size: 0.9rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
     }
 
     .progress-container {
-        margin-top: 1rem;
+        margin-top: 1.2rem;
     }
 
     .progress-info {
         display: flex;
         justify-content: space-between;
-        margin-bottom: 0.5rem;
-        font-size: 0.9rem;
+        margin-bottom: 0.7rem;
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: #495057;
     }
 
     .progress-bar {
         width: 100%;
-        height: 8px;
+        height: 10px;
         background: #e9ecef;
-        border-radius: 4px;
+        border-radius: 10px;
         overflow: hidden;
+        box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
     }
 
     .progress {
         height: 100%;
-        background: #00b894;
-        transition: width 0.3s ease;
+        background: linear-gradient(90deg, #00b894, #00a085);
+        transition: width 0.8s ease;
+        border-radius: 10px;
+    }
+
+    /* Tabs */
+    .tab-container {
+        margin-bottom: 2rem;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        overflow: hidden;
+        border: 1px solid #e9ecef;
+    }
+
+    .tab-buttons {
+        display: flex;
+        background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+        border-bottom: 2px solid #dee2e6;
+    }
+
+    .tab-button {
+        padding: 1.2rem 2.5rem;
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: 600;
+        color: #6c757d;
+        border-bottom: 3px solid transparent;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .tab-button::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(0, 184, 148, 0.1), transparent);
+        transition: left 0.5s ease;
+    }
+
+    .tab-button:hover::before {
+        left: 100%;
+    }
+
+    .tab-button:hover {
+        color: #00b894;
+        background: rgba(0, 184, 148, 0.05);
+    }
+
+    .tab-button.active {
+        color: #00b894;
+        border-bottom-color: #00b894;
+        background: white;
+    }
+
+    .tab-content {
+        display: none;
+        padding: 0;
+        animation: fadeIn 0.5s ease;
+    }
+
+    .tab-content.active {
+        display: block;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Edit Form */
+    .edit-form-container {
+        background: white;
+        border-radius: 15px;
+        padding: 2.5rem;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        margin: 0;
+        border: 1px solid #e9ecef;
+    }
+
+    .edit-form-container h3 {
+        color: #00b894;
+        margin-bottom: 2rem;
+        font-size: 1.5rem;
+        font-weight: 700;
+        text-align: center;
+        padding-bottom: 1rem;
+        border-bottom: 3px solid #00b894;
+    }
+
+    .form-group {
+        margin-bottom: 1.8rem;
+    }
+
+    .form-label {
+        display: block;
+        margin-bottom: 0.7rem;
+        font-weight: 600;
+        color: #2d3748;
+        font-size: 0.95rem;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 1rem;
+        border: 2px solid #e9ecef;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background: #f8f9fa;
+    }
+
+    .form-control:focus {
+        border-color: #00b894;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(0, 184, 148, 0.1);
+        background: white;
+        transform: translateY(-2px);
+    }
+
+    .form-select {
+        width: 100%;
+        padding: 1rem;
+        border: 2px solid #e9ecef;
+        border-radius: 8px;
+        font-size: 1rem;
+        background-color: #f8f9fa;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .form-select:focus {
+        border-color: #00b894;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(0, 184, 148, 0.1);
+        background: white;
+    }
+
+    .form-actions {
+        display: flex;
+        gap: 1rem;
+        justify-content: flex-end;
+        margin-top: 2.5rem;
+        padding-top: 2rem;
+        border-top: 2px solid #f0f0f0;
+    }
+
+    /* Checkbox Group */
+    .checkbox-group {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+
+    .checkbox-item {
+        display: flex;
+        align-items: flex-start;
+        padding: 1.2rem;
+        border: 2px solid #e9ecef;
+        border-radius: 10px;
+        transition: all 0.3s ease;
+        background: #f8f9fa;
+        cursor: pointer;
+    }
+
+    .checkbox-item:hover {
+        border-color: #00b894;
+        background: rgba(0, 184, 148, 0.05);
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(0, 184, 148, 0.1);
+    }
+
+    .checkbox-item input[type="checkbox"] {
+        margin-right: 1rem;
+        transform: scale(1.3);
+        margin-top: 0.2rem;
+        accent-color: #00b894;
+    }
+
+    .checkbox-label {
+        flex: 1;
+        cursor: pointer;
+    }
+
+    .group-details {
+        font-size: 0.8rem;
+        color: #6c757d;
+        margin-top: 0.5rem;
+        line-height: 1.4;
+    }
+
+    .status-badge-small {
+        padding: 0.3rem 0.7rem;
+        border-radius: 15px;
+        font-size: 0.7rem;
+        font-weight: 600;
+        display: inline-block;
+        margin-left: 0.5rem;
+    }
+
+    .status-badge-small.active {
+        background: #d4edda;
+        color: #155724;
+        border: 1px solid #28a745;
+    }
+
+    .status-badge-small.inactive {
+        background: #f8d7da;
+        color: #721c24;
+        border: 1px solid #dc3545;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 3rem;
+        color: #6c757d;
+        background: #f8f9fa;
+        border-radius: 12px;
+        border: 2px dashed #dee2e6;
+        grid-column: 1 / -1;
+    }
+
+    /* Loading Spinner */
+    .loading {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 3px solid #f3f3f3;
+        border-top: 3px solid #00b894;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin-right: 0.5rem;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+        .profile-container {
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+        
+        .info-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .tab-buttons {
+            flex-wrap: wrap;
+        }
+        
+        .tab-button {
+            flex: 1;
+            min-width: 120px;
+            padding: 1rem 1.5rem;
+        }
     }
 
     @media (max-width: 768px) {
@@ -381,25 +782,67 @@
             gap: 1rem;
             align-items: flex-start;
         }
-
-        .profile-container {
-            grid-template-columns: 1fr;
-        }
-
-        .info-grid {
-            grid-template-columns: 1fr;
-        }
-
+        
         .action-buttons {
             flex-direction: column;
+            width: 100%;
         }
-
+        
+        .btn {
+            width: 100%;
+            justify-content: center;
+        }
+        
         .groups-grid {
             grid-template-columns: 1fr;
         }
+        
+        .stats-container {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        
+        .checkbox-group {
+            grid-template-columns: 1fr;
+        }
+        
+        .form-actions {
+            flex-direction: column;
+        }
+    }
 
+    @media (max-width: 480px) {
         .stats-container {
             grid-template-columns: 1fr;
+        }
+        
+        .tab-button {
+            padding: 1rem;
+            font-size: 0.9rem;
+        }
+        
+        .edit-form-container {
+            padding: 1.5rem;
+            margin: 0.5rem;
+        }
+    }
+
+    /* Print Styles */
+    @media print {
+        .btn, .action-buttons, .alert-close, .tab-buttons {
+            display: none !important;
+        }
+        
+        .profile-card, .info-card, .stat-card {
+            box-shadow: none !important;
+            border: 1px solid #ccc !important;
+        }
+        
+        .status-badge {
+            cursor: default !important;
+        }
+        
+        .tab-content {
+            display: block !important;
         }
     }
 </style>
@@ -412,6 +855,9 @@
         <a href="{% url 'admin_oquvchilar' %}" class="btn-secondary btn">
             ← O'quvchilar ro'yxati
         </a>
+        <button onclick="openEditModal()" class="btn-warning btn">
+            <i class="fas fa-edit"></i> Tahrirlash
+        </button>
     </div>
 </div>
 
@@ -436,105 +882,293 @@
     {% endif %}
 </div>
 
-<div class="profile-container">
-    <!-- Profile Card -->
-    <div class="profile-card">
-        <div class="profile-avatar">
-            {{ student.first_name|first }}{{ student.last_name|first }}
-        </div>
-        <div class="profile-name">
-            {{ student.first_name }} {{ student.last_name }}
-        </div>
-        <div class="profile-role">O'quvchi</div>
-        <div class="status-badge {% if student.status == 'approved' %}status-approved{% elif student.status == 'not_confirmed' %}status-not-confirmed{% else %}status-group{% endif %}"
-             onclick="toggleStatus('{{ student.uuid }}')"
-             title="Holatni o'zgartirish uchun bosing"
-             style="cursor: pointer;">
-            {% if student.status == 'approved' %}
-                ✅ Tasdiqlangan
-            {% elif student.status == 'not_confirmed' %}
-                ⏳ Tasdiqlanmadi
-            {% else %}
-                👥 Grupada
-            {% endif %}
+<!-- Tab Container -->
+<div class="tab-container">
+    <div class="tab-buttons">
+        <button class="tab-button active" onclick="openTab('info')">📊 Ma'lumotlar</button>
+        <button class="tab-button" onclick="openTab('edit')">✏️ Tahrirlash</button>
+        <button class="tab-button" onclick="openTab('groups')">📚 Guruhlar</button>
+    </div>
+
+    <!-- Info Tab -->
+    <div id="info-tab" class="tab-content active">
+        <div class="profile-container">
+            <!-- Profile Card -->
+            <div class="profile-card">
+                <div class="profile-avatar">
+                    {{ student.first_name|first }}{{ student.last_name|first }}
+                </div>
+                <div class="profile-name">
+                    {{ student.first_name }} {{ student.last_name }}
+                </div>
+                <div class="profile-role">🎓 O'quvchi</div>
+                <div class="status-badge {% if student.status == 'approved' %}status-approved{% elif student.status == 'not_confirmed' %}status-not-confirmed{% else %}status-group{% endif %}">
+                    {% if student.status == 'approved' %}
+                        ✅ Tasdiqlangan
+                    {% elif student.status == 'not_confirmed' %}
+                        ⏳ Tasdiqlanmadi
+                    {% else %}
+                        👥 Grupada
+                    {% endif %}
+                </div>
+
+                <div class="quick-stats">
+                    <div class="stat-item">
+                        <span class="stat-label">📚 Guruhlar:</span>
+                        <span class="stat-value">{{ groups_count }} ta</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">📅 Qo'shilgan:</span>
+                        <span class="stat-value">{{ student.created_ad|date:"Y-m-d" }}</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">👨‍💼 Admin:</span>
+                        <span class="stat-value">{{ student.admistrator }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Information Card -->
+            <div class="info-card">
+                <!-- Asosiy Ma'lumotlar -->
+                <div class="info-section">
+                    <h3>👤 Asosiy Ma'lumotlar</h3>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span class="info-label">Ism</span>
+                            <span class="info-value">{{ student.first_name }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Familiya</span>
+                            <span class="info-value">{{ student.last_name }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Login</span>
+                            <span class="info-value">{{ student.username }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Telefon</span>
+                            <span class="info-value">{{ student.phone_number }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Holati</span>
+                            <span class="info-value">
+                                {% if student.status == 'approved' %}
+                                    <span style="color: #28a745;">●</span> Tasdiqlangan
+                                {% elif student.status == 'not_confirmed' %}
+                                    <span style="color: #ffc107;">●</span> Tasdiqlanmadi
+                                {% else %}
+                                    <span style="color: #17a2b8;">●</span> Grupada
+                                {% endif %}
+                            </span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Rol</span>
+                            <span class="info-value">{{ student.role }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Administrator</span>
+                            <span class="info-value">{{ student.admistrator }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Qo'shilgan sana</span>
+                            <span class="info-value">{{ student.created_ad|date:"Y-m-d H:i" }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Guruhlar Section -->
+                <div class="info-section">
+                    <h3>📚 Guruhlar ({{ groups_count }} ta)</h3>
+                    {% if student_groups %}
+                    <div class="groups-grid">
+                        {% for group in student_groups %}
+                        <div class="group-card">
+                            <div class="group-name">{{ group.title }}</div>
+                            <div class="group-info">
+                                <span>💰 Narxi: {{ group.group_price }} so'm</span>
+                                <span>
+                                    {% if group.status == 'active' %}
+                                    <span style="color: #28a745;">●</span> Faol
+                                    {% else %}
+                                    <span style="color: #dc3545;">●</span> Tugagan
+                                    {% endif %}
+                                </span>
+                            </div>
+                            <div class="group-info">
+                                <span>🕐 {{ group.group_time }}</span>
+                                <span>👨‍🏫 {{ group.teacher.first_name }}</span>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="empty-groups">
+                        <div>📚</div>
+                        <p>O'quvchi hali hech qanday guruhga qo'shilmagan</p>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- O'quvchi haqida -->
+                {% if student.about_student %}
+                <div class="info-section">
+                    <h3>📝 O'quvchi haqida</h3>
+                    <div class="about-student">
+                        {{ student.about_student|linebreaks }}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
         </div>
 
-        <!-- Quick Stats -->
-        <div class="quick-stats">
-            <div class="stat-item">
-                <span class="stat-label">Guruhlar:</span>
-                <span class="stat-value">{{ groups_count }} ta</span>
+        <!-- Statistics Section -->
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="stat-number">{{ groups_count }}</div>
+                <div class="stat-label">Guruhlar Soni</div>
             </div>
-            <div class="stat-item">
-                <span class="stat-label">Qo'shilgan:</span>
-                <span class="stat-value">{{ student.created_ad|date:"Y-m-d" }}</span>
+            <div class="stat-card">
+                <div class="stat-number">
+                    {% if student.status == 'approved' %}
+                        100%
+                    {% elif student.status == 'not_confirmed' %}
+                        50%
+                    {% else %}
+                        75%
+                    {% endif %}
+                </div>
+                <div class="stat-label">Faollik Darajasi</div>
             </div>
-            <div class="stat-item">
-                <span class="stat-label">Admin:</span>
-                <span class="stat-value">{{ student.admistrator }}</span>
+            <div class="stat-card">
+                <div class="stat-number">
+                    {% if student.status == 'approved' %}
+                        ✅
+                    {% elif student.status == 'not_confirmed' %}
+                        ⏳
+                    {% else %}
+                        👥
+                    {% endif %}
+                </div>
+                <div class="stat-label">Joriy Holati</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{ student.created_ad|timesince }}</div>
+                <div class="stat-label">Tizimda</div>
             </div>
         </div>
     </div>
 
-    <!-- Information Card -->
-    <div class="info-card">
-        <!-- Asosiy Ma'lumotlar -->
-        <div class="info-section">
-            <h3>👤 Asosiy Ma'lumotlar</h3>
-            <div class="info-grid">
-                <div class="info-item">
-                    <span class="info-label">Ism</span>
-                    <span class="info-value">{{ student.first_name }}</span>
+    <!-- Edit Tab -->
+    <div id="edit-tab" class="tab-content">
+        <div class="edit-form-container">
+            <h3>✏️ O'quvchi Ma'lumotlarini Tahrirlash</h3>
+            
+            <form method="POST" action="{% url 'student_edit' student.uuid %}" id="editStudentForm">
+                {% csrf_token %}
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                    <div class="form-group">
+                        <label for="first_name" class="form-label">Ism *</label>
+                        <input type="text" id="first_name" name="first_name" class="form-control" 
+                               value="{{ student.first_name }}" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="last_name" class="form-label">Familiya *</label>
+                        <input type="text" id="last_name" name="last_name" class="form-control" 
+                               value="{{ student.last_name }}" required>
+                    </div>
                 </div>
-                <div class="info-item">
-                    <span class="info-label">Familiya</span>
-                    <span class="info-value">{{ student.last_name }}</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Login</span>
-                    <span class="info-value">{{ student.username }}</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Telefon</span>
-                    <span class="info-value">{{ student.phone_number }}</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Holati</span>
-                    <span class="info-value">
-                        {% if student.status == 'approved' %}
-                            <span style="color: #28a745;">●</span> Tasdiqlangan
-                        {% elif student.status == 'not_confirmed' %}
-                            <span style="color: #ffc107;">●</span> Tasdiqlanmadi
-                        {% else %}
-                            <span style="color: #17a2b8;">●</span> Grupada
-                        {% endif %}
-                    </span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Rol</span>
-                    <span class="info-value">{{ student.role }}</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Administrator</span>
-                    <span class="info-value">{{ student.admistrator }}</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Qo'shilgan sana</span>
-                    <span class="info-value">{{ student.created_ad|date:"Y-m-d H:i" }}</span>
-                </div>
-            </div>
-        </div>
 
-        <!-- Guruhlar Section -->
-        <div class="info-section">
-            <h3>📚 Guruhlar ({{ groups_count }} ta)</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                    <div class="form-group">
+                        <label for="username" class="form-label">Login *</label>
+                        <input type="text" id="username" name="username" class="form-control" 
+                               value="{{ student.username }}" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone_number" class="form-label">Telefon *</label>
+                        <input type="text" id="phone_number" name="phone_number" class="form-control" 
+                               value="{{ student.phone_number }}" required>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                    <div class="form-group">
+                        <label for="status" class="form-label">Holati *</label>
+                        <select id="status" name="status" class="form-select" required>
+                            <option value="approved" {% if student.status == 'approved' %}selected{% endif %}>Tasdiqlangan</option>
+                            <option value="not_confirmed" {% if student.status == 'not_confirmed' %}selected{% endif %}>Tasdiqlanmadi</option>
+                            <option value="group" {% if student.status == 'group' %}selected{% endif %}>Grupada</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="role" class="form-label">Rol</label>
+                        <input type="text" id="role" name="role" class="form-control" 
+                               value="{{ student.role }}">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="about_student" class="form-label">O'quvchi haqida</label>
+                    <textarea id="about_student" name="about_student" class="form-control" 
+                              rows="4" placeholder="O'quvchi haqida qo'shimcha ma'lumot...">{{ student.about_student }}</textarea>
+                </div>
+
+                <!-- Guruhlar tanlash -->
+                <div class="form-group">
+                    <label class="form-label">📚 Guruhlar</label>
+                    <div class="checkbox-group">
+                        {% for group in all_groups %}
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="group_{{ group.id }}" name="groups" 
+                                   value="{{ group.id }}" 
+                                   {% if group in student_groups %}checked{% endif %}>
+                            <label for="group_{{ group.id }}" class="checkbox-label">
+                                <strong>{{ group.title }}</strong>
+                                <div class="group-details">
+                                    💰 {{ group.group_price }} so'm | 🕐 {{ group.group_time }} | 
+                                    👨‍🏫 {{ group.teacher.first_name }}
+                                    <span class="status-badge-small {% if group.status == 'active' %}active{% else %}inactive{% endif %}">
+                                        {% if group.status == 'active' %}Faol{% else %}Tugagan{% endif %}
+                                    </span>
+                                </div>
+                            </label>
+                        </div>
+                        {% empty %}
+                        <div class="empty-state">
+                            <p>Hozircha hech qanday gruppa mavjud emas</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="openTab('info')">
+                        Bekor qilish
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Saqlash
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Groups Tab -->
+    <div id="groups-tab" class="tab-content">
+        <div class="info-card">
+            <h3>📚 O'quvchi Guruhlari</h3>
             {% if student_groups %}
             <div class="groups-grid">
                 {% for group in student_groups %}
                 <div class="group-card">
                     <div class="group-name">{{ group.title }}</div>
                     <div class="group-info">
-                        <span>Narxi: {{ group.group_price }} so'm</span>
+                        <span>💰 Narxi: {{ group.group_price }} so'm</span>
                         <span>
                             {% if group.status == 'active' %}
                             <span style="color: #28a745;">●</span> Faol
@@ -544,11 +1178,11 @@
                         </span>
                     </div>
                     <div class="group-info">
-                        <span>{{ group.group_time }}</span>
-                        <span>{{ group.teacher.first_name }}</span>
+                        <span>🕐 {{ group.group_time }}</span>
+                        <span>👨‍🏫 {{ group.teacher.first_name }}</span>
                     </div>
                     <div style="margin-top: 0.5rem;">
-                        <a href="{% url 'admin_group_detail' group.id %}" class="btn-sm" style="background: #00b894; color: white; text-decoration: none; padding: 0.2rem 0.5rem; border-radius: 3px; font-size: 0.7rem;">
+                        <a href="{% url 'admin_group_detail' group.id %}" class="btn-sm" style="background: #00b894; color: white; text-decoration: none; padding: 0.3rem 0.7rem; border-radius: 5px; font-size: 0.75rem;">
                             Guruhni ko'rish
                         </a>
                     </div>
@@ -559,154 +1193,9 @@
             <div class="empty-groups">
                 <div>📚</div>
                 <p>O'quvchi hali hech qanday guruhga qo'shilmagan</p>
+                <button onclick="openTab('edit')" class="btn">Gruppaga qo'shish</button>
             </div>
             {% endif %}
-        </div>
-
-        <!-- O'quvchi haqida -->
-        {% if student.about_student %}
-        <div class="info-section">
-            <h3>📝 O'quvchi haqida</h3>
-            <div class="about-student">
-                {{ student.about_student|linebreaks }}
-            </div>
-        </div>
-        {% endif %}
-    </div>
-</div>
-
-<!-- Statistics Section -->
-<div class="stats-container">
-    <div class="stat-card">
-        <div class="stat-number">{{ groups_count }}</div>
-        <div class="stat-label">Guruhlar Soni</div>
-    </div>
-    <div class="stat-card">
-        <div class="stat-number">
-            {% if student.status == 'approved' %}
-                100%
-            {% elif student.status == 'not_confirmed' %}
-                50%
-            {% else %}
-                75%
-            {% endif %}
-        </div>
-        <div class="stat-label">Faollik Darajasi</div>
-    </div>
-    <div class="stat-card">
-        <div class="stat-number">
-            {% if student.status == 'approved' %}
-                ✅
-            {% elif student.status == 'not_confirmed' %}
-                ⏳
-            {% else %}
-                👥
-            {% endif %}
-        </div>
-        <div class="stat-label">Joriy Holati</div>
-    </div>
-    <div class="stat-card">
-        <div class="stat-number">{{ student.created_ad|timesince }}</div>
-        <div class="stat-label">Tizimda</div>
-    </div>
-</div>
-
-<!-- Additional Information -->
-<div style="margin-top: 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
-    <!-- Payment Information -->
-    <div class="info-card">
-        <div class="info-section">
-            <h3>💰 To'lov Ma'lumotlari</h3>
-            <div class="info-grid">
-                <div class="info-item">
-                    <span class="info-label">Oxirgi to'lov:</span>
-                    <span class="info-value">500,000 so'm</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">To'lov holati:</span>
-                    <span class="info-value" style="color: #28a745;">To'langan</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Keyingi to'lov:</span>
-                    <span class="info-value">2024-02-01</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Qarzdorlik:</span>
-                    <span class="info-value" style="color: #dc3545;">0 so'm</span>
-                </div>
-            </div>
-            <div class="progress-container">
-                <div class="progress-info">
-                    <span>To'lovlar:</span>
-                    <span>100%</span>
-                </div>
-                <div class="progress-bar">
-                    <div class="progress" style="width: 100%; background: #28a745;"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Attendance Information -->
-    <div class="info-card">
-        <div class="info-section">
-            <h3>📊 Davomat Statistikasi</h3>
-            <div class="info-grid">
-                <div class="info-item">
-                    <span class="info-label">Jami darslar:</span>
-                    <span class="info-value">24</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Qatnashgan:</span>
-                    <span class="info-value">22</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Qatnashmagan:</span>
-                    <span class="info-value">2</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Davomat foizi:</span>
-                    <span class="info-value" style="color: #28a745;">92%</span>
-                </div>
-            </div>
-            <div class="progress-container">
-                <div class="progress-info">
-                    <span>Davomat:</span>
-                    <span>92%</span>
-                </div>
-                <div class="progress-bar">
-                    <div class="progress" style="width: 92%; background: #17a2b8;"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Activity Timeline -->
-<div class="info-card" style="margin-top: 2rem;">
-    <div class="info-section">
-        <h3>📈 So'nggi Faoliyat</h3>
-        <div style="border-left: 2px solid #00b894; margin-left: 1rem; padding-left: 1.5rem;">
-            <div style="margin-bottom: 1.5rem; position: relative;">
-                <div style="position: absolute; left: -1.5rem; top: 0; width: 10px; height: 10px; background: #00b894; border-radius: 50%;"></div>
-                <div style="font-weight: 600; color: #333;">Guruhga qo'shildi</div>
-                <div style="font-size: 0.8rem; color: #666;">Frontend 101 guruhi - 3 kun oldin</div>
-            </div>
-            <div style="margin-bottom: 1.5rem; position: relative;">
-                <div style="position: absolute; left: -1.5rem; top: 0; width: 10px; height: 10px; background: #00b894; border-radius: 50%;"></div>
-                <div style="font-weight: 600; color: #333;">To'lov qilindi</div>
-                <div style="font-size: 0.8rem; color: #666;">500,000 so'm - 1 hafta oldin</div>
-            </div>
-            <div style="margin-bottom: 1.5rem; position: relative;">
-                <div style="position: absolute; left: -1.5rem; top: 0; width: 10px; height: 10px; background: #00b894; border-radius: 50%;"></div>
-                <div style="font-weight: 600; color: #333;">Tasdiqlandi</div>
-                <div style="font-size: 0.8rem; color: #666;">Administrator tomonidan - 2 hafta oldin</div>
-            </div>
-            <div style="position: relative;">
-                <div style="position: absolute; left: -1.5rem; top: 0; width: 10px; height: 10px; background: #00b894; border-radius: 50%;"></div>
-                <div style="font-weight: 600; color: #333;">Ro'yxatdan o'tdi</div>
-                <div style="font-size: 0.8rem; color: #666;">Tizimga qo'shildi - 1 oy oldin</div>
-            </div>
         </div>
     </div>
 </div>
@@ -714,44 +1203,117 @@
 
 {% block extra_js %}
 <script>
-    // O'quvchi holatini o'zgartirish
-    function toggleStatus(studentUuid) {
-        if (!confirm('O\'quvchi holatini o\'zgartirishni tasdiqlaysizmi?')) {
-            return;
-        }
-
-        // Bu yerda AJAX so'rov yuboriladi
-        fetch(`/admin/oquvchilar/${studentUuid}/toggle-status/`, {
-            method: 'POST',
-            headers: {
-                'X-CSRFToken': '{{ csrf_token }}',
-                'Content-Type': 'application/json',
-            },
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                location.reload();
-            } else {
-                alert('Xatolik yuz berdi: ' + data.error);
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Xatolik yuz berdi');
+    // Tab funksiyalari
+    function openTab(tabName) {
+        // Barcha tab kontentlarini yashirish
+        document.querySelectorAll('.tab-content').forEach(tab => {
+            tab.classList.remove('active');
         });
+        
+        // Barcha tab tugmalarini aktiv holatdan chiqarish
+        document.querySelectorAll('.tab-button').forEach(button => {
+            button.classList.remove('active');
+        });
+        
+        // Tanlangan tabni ko'rsatish
+        document.getElementById(tabName + '-tab').classList.add('active');
+        
+        // Tanlangan tab tugmasini aktiv qilish
+        event.currentTarget.classList.add('active');
     }
 
-    // Auto-hide messages after 5 seconds
-    document.addEventListener('DOMContentLoaded', function() {
-        const messages = document.querySelectorAll('.alert');
-        messages.forEach(function(message) {
-            setTimeout(function() {
-                message.style.display = 'none';
-            }, 5000);
-        });
+    function openEditModal() {
+        openTab('edit');
+    }
 
-        // Add animation to progress bars
+    // Form yuborish
+    document.addEventListener('DOMContentLoaded', function() {
+        const editForm = document.getElementById('editStudentForm');
+        if (editForm) {
+            editForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const formData = new FormData(this);
+                const submitButton = this.querySelector('button[type="submit"]');
+                const originalText = submitButton.innerHTML;
+                
+                submitButton.innerHTML = '<span class="loading"></span> Saqlanmoqda...';
+                submitButton.disabled = true;
+
+                fetch(this.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                    }
+                })
+                .then(response => {
+                    // Avval response ni text sifatida olish
+                    return response.text().then(text => {
+                        try {
+                            // JSON ga parse qilish
+                            return JSON.parse(text);
+                        } catch (e) {
+                            console.error('JSON parse error:', e);
+                            throw new Error('Serverdan noto\'g\'ri formatdagi javob qaytdi');
+                        }
+                    });
+                })
+                .then(data => {
+                    if (data.success) {
+                        showMessage('✅ ' + data.message, 'success');
+                        setTimeout(() => {
+                            location.reload();
+                        }, 1500);
+                    } else {
+                        throw new Error(data.error || 'Noma\'lum xatolik yuz berdi');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showMessage('❌ ' + error.message, 'error');
+                })
+                .finally(() => {
+                    submitButton.innerHTML = originalText;
+                    submitButton.disabled = false;
+                });
+            });
+        }
+    });
+
+    // Xabar ko'rsatish funksiyasi
+    function showMessage(message, type) {
+        // Avvalgi xabarlarni o'chirish
+        const existingMessages = document.querySelectorAll('.custom-message');
+        existingMessages.forEach(msg => msg.remove());
+        
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `alert alert-${type} custom-message`;
+        messageDiv.innerHTML = `
+            <div>${message}</div>
+            <button class="alert-close" onclick="this.parentElement.remove()">×</button>
+        `;
+        
+        const messagesContainer = document.querySelector('.messages-container');
+        if (messagesContainer) {
+            messagesContainer.prepend(messageDiv);
+        } else {
+            const newContainer = document.createElement('div');
+            newContainer.className = 'messages-container';
+            newContainer.appendChild(messageDiv);
+            document.querySelector('.page-header').after(newContainer);
+        }
+        
+        // 5 soniyadan so'ng avtomatik o'chirish
+        setTimeout(() => {
+            if (messageDiv.parentElement) {
+                messageDiv.remove();
+            }
+        }, 5000);
+    }
+
+    // Progress bar animatsiyasi
+    document.addEventListener('DOMContentLoaded', function() {
         const progressBars = document.querySelectorAll('.progress');
         progressBars.forEach(function(bar) {
             const width = bar.style.width;
@@ -760,101 +1322,16 @@
                 bar.style.width = width;
             }, 300);
         });
-    });
 
-    // Print student information
-    function printStudentInfo() {
-        window.print();
-    }
-
-    // Export student data
-    function exportStudentData() {
-        if (confirm('O\'quvchi ma\'lumotlarini eksport qilmoqchimisiz?')) {
-            // Bu yerda haqiqiy eksport logikasi bo'ladi
-            alert('O\'quvchi ma\'lumotlari eksport qilindi!');
-            // window.location.href = '/export/student/{{ student.uuid }}/';
-        }
-    }
-
-    // Share student information
-    function shareStudentInfo() {
-        if (navigator.share) {
-            navigator.share({
-                title: '{{ student.first_name }} {{ student.last_name }} - O\'quvchi Ma\'lumotlari',
-                text: '{{ student.first_name }} {{ student.last_name }} o\'quvchisi haqida ma\'lumot',
-                url: window.location.href
-            })
-            .then(() => console.log('Muvaffaqiyatli ulashildi'))
-            .catch((error) => console.log('Ulashishda xatolik', error));
-        } else {
-            alert('Brauzeringiz ulashish funksiyasini qo\'llab-quvvatlamaydi');
-        }
-    }
-
-    // Keyboard shortcuts
-    document.addEventListener('keydown', function(e) {
-        // Ctrl + P to print
-        if (e.ctrlKey && e.key === 'p') {
-            e.preventDefault();
-            printStudentInfo();
-        }
-        
-        // Ctrl + E to export
-        if (e.ctrlKey && e.key === 'e') {
-            e.preventDefault();
-            exportStudentData();
-        }
-    });
-
-    // Copy student phone number
-    function copyPhoneNumber() {
-        const phoneNumber = '{{ student.phone_number }}';
-        navigator.clipboard.writeText(phoneNumber).then(function() {
-            alert('Telefon raqami nusxalandi: ' + phoneNumber);
-        }, function(err) {
-            console.error('Nusxalashda xatolik: ', err);
+        // Xabarlarni avtomatik yopish
+        const messages = document.querySelectorAll('.alert');
+        messages.forEach(function(message) {
+            setTimeout(function() {
+                if (message.parentElement) {
+                    message.style.display = 'none';
+                }
+            }, 5000);
         });
-    }
+    });
 </script>
-
-<style>
-    /* Additional responsive styles */
-    @media (max-width: 768px) {
-        .stats-container {
-            grid-template-columns: repeat(2, 1fr);
-        }
-    }
-
-    @media (max-width: 480px) {
-        .stats-container {
-            grid-template-columns: 1fr;
-        }
-    }
-
-    /* Print styles */
-    @media print {
-        .btn, .action-buttons, .alert-close {
-            display: none !important;
-        }
-        
-        .profile-card, .info-card {
-            box-shadow: none !important;
-            border: 1px solid #ccc !important;
-        }
-        
-        .status-badge {
-            cursor: default !important;
-        }
-    }
-
-    /* Hover effects */
-    .group-card:hover {
-        box-shadow: 0 6px 20px rgba(0, 184, 148, 0.15);
-    }
-
-    .stat-card:hover {
-        transform: translateY(-3px);
-        transition: transform 0.3s ease;
-    }
-</style>
 {% endblock %}
